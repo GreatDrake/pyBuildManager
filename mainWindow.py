@@ -160,7 +160,7 @@ class Window(MainUI):
         
         
         self.setFixedSize(0.328 * self.screen_width, 0.635 * self.screen_height)
-        self.setWindowTitle('pyCompileManager') #pyBuilder (old)
+        self.setWindowTitle('pyBuildManager') #pyBuilder (old)
         self.setWindowIcon(QIcon(os.path.join(self.resfolder, 'pyic.ico')))
         self.setPalette(pal)
         self.show()

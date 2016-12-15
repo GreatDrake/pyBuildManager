@@ -255,10 +255,28 @@ class Window(MainUI):
                                 
     #Компиляция проекта
     def build(self):
-        if (self.source is None) or (self.le.text() == '') or (self.le.text()[0] == ' ') or (not self.toolle.text()):
-            return
+        missing = []
+        
+        if (self.le.text() == '') or (self.le.text()[0] == ' '):
+            missing.append("Project name")
+            
+        if (self.source is None):
+            missing.append("Source file")
         
         if not hasattr(self, 'folder'): #folder - папка в которую нужно будет перенести скомпилированный проект
+            missing.append("Target folder")
+            
+        if (not self.toolle.text()):
+            missing.append("Build tool")
+            
+        if any(missing):
+            warning_text = 'You have to specify:\n'
+            for i in range(len(missing)-1):
+                warning_text += missing[i] + '\n'
+                
+            warning_text += missing[-1]
+            
+            Message.warningMessage(self, ' ', warning_text)
             return
         
         src = os.path.join(self.projectdir, 'tmp')

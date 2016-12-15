@@ -2,7 +2,7 @@ import os
 from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtGui import QIcon
 
-#Класс для вывода различный QMessageBox с сообщениями
+#Класс для вывода различных QMessageBox с сообщениями
 class Message(QWidget):
     
     @staticmethod

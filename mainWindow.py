@@ -131,7 +131,7 @@ class Window(MainUI):
         self.aboutAction = QAction(QIcon(os.path.join("Resources", "question.png")), "&About", self)
         self.aboutAction.triggered.connect(self.showAboutDialog)
         
-        self.manualAction = QAction("&Manual", self)
+        self.manualAction = QAction(QIcon(os.path.join("Resources", "manual.png")), "&Manual", self)
         self.manualAction.triggered.connect(self.showManual)
         
         menubar = self.menuBar()

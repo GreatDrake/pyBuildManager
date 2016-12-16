@@ -1,5 +1,5 @@
 import os
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton
 from PyQt5.QtGui import QIcon, QFont
 
 #Класс для вывода различных QMessageBox с сообщениями
@@ -14,6 +14,10 @@ class Message(QWidget):
         box.setIcon(QMessageBox.Critical)
         box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
         box.setStandardButtons(QMessageBox.Ok)
+        
+        button = box.findChild(QPushButton)
+        button.setFont(QFont("Calibri", 11))
+        
         box.exec_()
         
     @staticmethod
@@ -25,4 +29,10 @@ class Message(QWidget):
         box.setIcon(QMessageBox.Warning)
         box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
         box.setStandardButtons(QMessageBox.Ok)
+        
+        button = box.findChild(QPushButton)
+        button.setFont(QFont("Calibri", 11))
+        
         box.exec_()
+        
+        

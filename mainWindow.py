@@ -156,7 +156,7 @@ class Window(MainUI):
         
         pal = self.palette()
         role = self.backgroundRole()
-        pal.setColor(role, QColor(255, 255, 255)) #QColor(255, 252, 221)
+        pal.setColor(role, QColor(252, 252, 252)) #QColor(255, 252, 221)
         
         
         self.setFixedSize(0.328 * self.screen_width, 0.635 * self.screen_height)
@@ -179,13 +179,14 @@ class Window(MainUI):
 
 
     def showAboutDialog(self):
-        dl = About()
-        dl.exec_()
+        dial = About()
+        dial.setWindowFlags(Qt.Widget)
+        dial.exec_()
         
     def showSettings(self):
-        st = Settings(self.toolle, self.projectdir)
-        st.setWindowFlags(Qt.Widget)
-        st.exec_()
+        settings = Settings(self.toolle, self.projectdir)
+        settings.setWindowFlags(Qt.Widget)
+        settings.exec_()
         
     def showManual(self):
         webbrowser.open('manual.html')
@@ -257,7 +258,7 @@ class Window(MainUI):
     def build(self):
         missing = []
         
-        if (self.le.text() == '') or (self.le.text()[0] == ' '):
+        if (self.le.text() == '') or (self.le.text().isspace()):
             missing.append("Project name")
             
         if (self.source is None):
@@ -382,8 +383,11 @@ class Window(MainUI):
             self.fullsource = file
             if not (('.py' in parts[-1]) or ('pyw' in parts[-1])): #Проверка верности расширения файла
                 if file:
-                    self.warnlbl.setText('Source file must be .py or .pyw')
+                    #self.warnlbl.setText('Source file must be .py or .pyw')
+                    Message.warningMessage(self, ' ', 'Source file must be .py')
+
                 self.source = None
+                
                 return
             shutil.copyfile(file, os.path.join('tmp', parts[-1])) #parts[-1] Собственно имя файла
         except Exception:

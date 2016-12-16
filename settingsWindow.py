@@ -62,12 +62,12 @@ class Settings(QDialog):
         self.lbl2.move(10 / 1920 * self.screen_width, 95 / 1080 * self.screen_height) 
         self.lbl2.hide()
         
-        self.choosbtn = QPushButton('Choose', self)
-        self.choosbtn.move(317 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
-        self.choosbtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
-        self.choosbtn.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
-        self.choosbtn.clicked.connect(self.chooseSetupFile)
-        self.choosbtn.hide()
+        self.choosebtn = QPushButton('Choose', self)
+        self.choosebtn.move(317 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
+        self.choosebtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
+        self.choosebtn.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.choosebtn.clicked.connect(self.chooseSetupFile)
+        self.choosebtn.hide()
         
         self.createbtn = QPushButton("Create", self)
         self.createbtn.move(226 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
@@ -150,11 +150,15 @@ class Settings(QDialog):
         
     #Открыть setup файл в IDLE        
     def openSetupInIDLE(self):
-        python = os.path.dirname(sys.executable)
-        idle = os.path.join(python, "Lib", "idlelib") #Директория с idle
         fullsource = self.cxbldle.text() #Путь к setup файлу
         
-        if os.path.isdir(idle) and fullsource:
+        if not fullsource or fullsource.isspace():
+            return
+        
+        python = os.path.dirname(sys.executable)
+        idle = os.path.join(python, "Lib", "idlelib") #Директория с idle
+        
+        if os.path.isdir(idle):
             if 'idle.bat' in os.listdir(idle):
                 idle = os.path.join(idle, 'idle.bat')
                 
@@ -166,7 +170,7 @@ class Settings(QDialog):
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            Message.errorMessage(self, " ", "Failed to open IDLE")
                 except Exception:
                     pass
                 
@@ -181,13 +185,13 @@ class Settings(QDialog):
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            Message.errorMessage(self, " ", "Failed to open IDLE")
                 except Exception:
                     pass
             else:
-                Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                Message.errorMessage(self, " ", "Failed to open IDLE")
         else:
-            Message.errorMessage(self, "Fail", "Failed to open IDLE")
+            Message.errorMessage(self, " ", "Failed to open IDLE")
      
      
     #Отобразить уже выбранные настройки если таковые имеются    
@@ -250,7 +254,7 @@ class Settings(QDialog):
         self.instbldle.show()
         
         self.lbl2.hide()
-        self.choosbtn.hide()
+        self.choosebtn.hide()
         self.createbtn.hide()
         self.editbtn.hide()
         self.cxbldle.hide()
@@ -262,7 +266,7 @@ class Settings(QDialog):
         self.instbldle.hide()
         
         self.lbl2.show()
-        self.choosbtn.show()
+        self.choosebtn.show()
         self.createbtn.show()
         self.editbtn.show()
         self.cxbldle.show()
@@ -275,7 +279,7 @@ class Settings(QDialog):
         file = None
         
         try:
-            name = dial.getOpenFileName(self, "Choose file", QDir.homePath())
+            name = dial.getOpenFileName(self, 'Choose file', QDir.homePath())
             file = str(name)[2:-6-self.strnum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
         except Exception:
@@ -284,8 +288,9 @@ class Settings(QDialog):
         
         if file:
             if os.path.basename(file).split('.')[1] != 'py':
-                self.warnlbl.setText("Setup file must be .py")
-                self.warnlbl.adjustSize()
+                #self.warnlbl.setText("Setup file must be .py")
+                #self.warnlbl.adjustSize()
+                Message.warningMessage(self, ' ', 'Setup file must be .py')
             else:
                 self.warnlbl.setText("                                                                                                 ")
                 self.warnlbl.adjustSize()
@@ -323,8 +328,9 @@ class Settings(QDialog):
             path = str(self.cxbldle.text())
             
             if not path or path.isspace():
-                self.warnlbl.setText('You have to specify setup file')
-                self.warnlbl.adjustSize()
+                #self.warnlbl.setText('You have to specify setup file')
+                #self.warnlbl.adjustSize()
+                Message.warningMessage(self, ' ', 'You have to specify\nsetup file')
             else:
                 self.le.setText('cx_Freeze')
                 with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:

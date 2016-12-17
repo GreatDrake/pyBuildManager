@@ -14,9 +14,9 @@ class Settings(QDialog):
         
         #корректное отображение на линуксе получаемых через QFileDialog путей
         if sys.platform == 'linux':
-            self.strnum = 13
+            self.filepathStrNum = 13
         else:
-            self.strnum = 0
+            self.filepathStrNum = 0
         
         # Текстовое поле для отображения настроек в главном окне
         self.le = leToChange
@@ -30,18 +30,18 @@ class Settings(QDialog):
         self.ok = QPushButton('OK', self)
         self.ok.move(295 / 1920 * self.screen_width, 225 / 1080 * self.screen_height)
         self.ok.resize(100 / 1920 * self.screen_width, 34 / 1080 * self.screen_height)
-        self.ok.setFont(QFont('Calibri Bold', 11 / 1080 * self.screen_height))
+        self.ok.setFont(QFont('Calibri Bold', 11))
         self.ok.clicked.connect(self.okay)
         
         self.cancel = QPushButton('Cancel', self)
         self.cancel.move(20 / 1920 * self.screen_width, 225 / 1080 * self.screen_height)
         self.cancel.resize(100 / 1920 * self.screen_width, 34 / 1080 * self.screen_height)
-        self.cancel.setFont(QFont('Calibri Bold', 11 / 1080 * self.screen_height))
+        self.cancel.setFont(QFont('Calibri Bold', 11))
         self.cancel.clicked.connect(self.done)
         
         
         self.lbl = QLabel("Build tool : ", self)
-        self.lbl.setFont(QFont("Calibri", 17 / 1920 * self.screen_width))
+        self.lbl.setFont(QFont("Calibri", 17))
         self.lbl.move(60 / 1920 * self.screen_width, 20 / 1080 * self.screen_height) 
         
         self.getBuilders()
@@ -58,44 +58,44 @@ class Settings(QDialog):
         ############################################################################################## 
           
         self.lbl2 = QLabel("Setup file : ", self)
-        self.lbl2.setFont(QFont("Calibri", 16 / 1920 * self.screen_width))
+        self.lbl2.setFont(QFont("Calibri", 16))
         self.lbl2.move(10 / 1920 * self.screen_width, 95 / 1080 * self.screen_height) 
         self.lbl2.hide()
         
         self.choosebtn = QPushButton('Choose', self)
         self.choosebtn.move(317 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
         self.choosebtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
-        self.choosebtn.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.choosebtn.setFont(QFont('Calibri', 13))
         self.choosebtn.clicked.connect(self.chooseSetupFile)
         self.choosebtn.hide()
         
         self.createbtn = QPushButton("Create", self)
         self.createbtn.move(226 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
         self.createbtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
-        self.createbtn.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.createbtn.setFont(QFont('Calibri', 13))
         self.createbtn.clicked.connect(self.createSetupFile)
         self.createbtn.hide()
         
         self.editbtn = QPushButton("Edit", self)
         self.editbtn.move(135 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
         self.editbtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
-        self.editbtn.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.editbtn.setFont(QFont('Calibri', 13))
         self.editbtn.clicked.connect(self.openSetupInIDLE)
         self.editbtn.hide()
         
         self.cxbldle = QLineEdit(self)
         self.cxbldle.move(10 / 1920 * self.screen_width, 145 / 1080 * self.screen_height)
         self.cxbldle.resize(395 / 1920 * self.screen_width, 37 / 1080 * self.screen_height)
-        self.cxbldle.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.cxbldle.setFont(QFont('Calibri', 13))
         self.cxbldle.setReadOnly(True)
         self.cxbldle.hide()
         
-        self.warnlbl = QLabel("                                                                         ", self) #"Setup file must be .py"
-        self.warnlbl.adjustSize()
-        self.warnlbl.setStyleSheet("QLabel { color : red; }")
-        self.warnlbl.setFont(QFont("Calibri", 14 / 1920 * self.screen_width))
-        self.warnlbl.move(10 / 1920 * self.screen_width, 185 / 1080 * self.screen_height)
-        self.warnlbl.hide()
+        #self.warnlbl = QLabel("                                                                         ", self) #"Setup file must be .py"
+        #self.warnlbl.adjustSize()
+        #self.warnlbl.setStyleSheet("QLabel { color : red; }")
+        #self.warnlbl.setFont(QFont("Calibri", 14))
+        #self.warnlbl.move(10 / 1920 * self.screen_width, 185 / 1080 * self.screen_height)
+        #self.warnlbl.hide()
         
         ############################################################################################## 
         ############################################################################################## 
@@ -106,14 +106,14 @@ class Settings(QDialog):
         ############################################################################################## 
         
         self.lbl3 = QLabel("Build options : ", self)
-        self.lbl3.setFont(QFont("Calibri", 16 / 1920 * self.screen_width))
+        self.lbl3.setFont(QFont("Calibri", 16))
         self.lbl3.move(10 / 1920 * self.screen_width, 95 / 1080 * self.screen_height) 
         self.lbl3.hide()
         
         self.instbldle = QLineEdit(self)
         self.instbldle.move(10 / 1920 * self.screen_width, 145 / 1080 * self.screen_height)
         self.instbldle.resize(395 / 1920 * self.screen_width, 37 / 1080 * self.screen_height)
-        self.instbldle.setFont(QFont('Calibri', 13 / 1080 * self.screen_height))
+        self.instbldle.setFont(QFont('Calibri', 13))
         self.instbldle.hide()
         self.instbldle.setPlaceholderText('For example: --noconsole, or leave empty')
         
@@ -258,7 +258,7 @@ class Settings(QDialog):
         self.createbtn.hide()
         self.editbtn.hide()
         self.cxbldle.hide()
-        self.warnlbl.hide()
+        #self.warnlbl.hide()
     
     #Отобразить интерфейс для cx_Freeze
     def showFreezeUI(self):
@@ -270,7 +270,7 @@ class Settings(QDialog):
         self.createbtn.show()
         self.editbtn.show()
         self.cxbldle.show()
-        self.warnlbl.show()
+        #self.warnlbl.show()
         
     
     #Выбор setup файла для cx_Freeze 
@@ -280,7 +280,7 @@ class Settings(QDialog):
         
         try:
             name = dial.getOpenFileName(self, 'Choose file', QDir.homePath())
-            file = str(name)[2:-6-self.strnum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
+            file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
         except Exception:
             dial.accept()
@@ -292,8 +292,8 @@ class Settings(QDialog):
                 #self.warnlbl.adjustSize()
                 Message.warningMessage(self, ' ', 'Setup file must be .py')
             else:
-                self.warnlbl.setText("                                                                                                 ")
-                self.warnlbl.adjustSize()
+                #self.warnlbl.setText("                                                                                                 ")
+                #self.warnlbl.adjustSize()
                 self.cxbldle.setText(file)
         
         

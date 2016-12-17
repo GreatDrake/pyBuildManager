@@ -22,10 +22,10 @@ class Window(MainUI):
         MainUI.initUI(self)
         
         #корректное отображение на линуксе получаемых через QFileDialog путей
-        if sys.platform == 'linux': # -19(-13) linux strnum
-            self.strnum = 13
+        if sys.platform == 'linux': # -19(-13) linux filepathStrNum
+            self.filepathStrNum = 13
         else:
-            self.strnum = 0
+            self.filepathStrNum = 0
         
         self.projectdir = os.getcwd()
         
@@ -342,7 +342,7 @@ class Window(MainUI):
         #Получение нужного для добавления файла
         try:
             name = dial.getOpenFileName(self, "Choose file", QDir.homePath())
-            file = str(name)[2:-6-self.strnum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
+            file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
             parts = file.split(os.path.sep)
             shutil.copyfile(file, os.path.join('tmp', parts[-1])) #parts[-1] Собственно имя файла
@@ -377,7 +377,7 @@ class Window(MainUI):
         #Получение нужного для добавления файла
         try:
             name = dial.getOpenFileName(self, "Choose file", QDir.homePath()) 
-            file = str(name)[2:-6-self.strnum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
+            file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
             parts = file.split(os.path.sep)
             self.fullsource = file

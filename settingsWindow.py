@@ -12,6 +12,9 @@ class Settings(QDialog):
     def __init__(self, leToChange, projDir):
         super().__init__()
         
+        #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
+        self.firstOpen = True
+        
         #корректное отображение на линуксе получаемых через QFileDialog путей
         if sys.platform == 'linux':
             self.filepathStrNum = 13
@@ -279,7 +282,11 @@ class Settings(QDialog):
         file = None
         
         try:
-            name = dial.getOpenFileName(self, 'Choose file', QDir.homePath())
+            if self.firstOpen:
+                name = dial.getOpenFileName(self, 'Choose file', QDir.homePath())
+                self.firstOpen = False
+            else:
+                name = dial.getOpenFileName(self, 'Choose file')
             file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
         except Exception:

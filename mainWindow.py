@@ -21,6 +21,9 @@ class Window(MainUI):
         #Инициализируем весь интерфейс из класса MainUI
         MainUI.initUI(self)
         
+        #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
+        self.firstOpen = True
+        
         #корректное отображение на линуксе получаемых через QFileDialog путей
         if sys.platform == 'linux': # -19(-13) linux filepathStrNum
             self.filepathStrNum = 13
@@ -38,6 +41,11 @@ class Window(MainUI):
         #os.mkdir(os.path.join("tmp", "includes"))
         
         shutil.rmtree('tmp2', ignore_errors=True)
+        
+        try:
+            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+        except Exception:
+            pass
         
         self.resfolder = os.path.join(self.projectdir, "Resources")
 
@@ -170,6 +178,10 @@ class Window(MainUI):
         #Перед выходом необходимо удалить временную папку с проектом
         shutil.rmtree(os.path.join(self.projectdir, 'tmp'), ignore_errors=True)
         shutil.rmtree(os.path.join(self.projectdir, 'tmp2'), ignore_errors=True)
+        try:
+            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+        except Exception:
+            pass
         event.accept()
 
         
@@ -342,7 +354,11 @@ class Window(MainUI):
 
         #Получение нужного для добавления файла
         try:
-            name = dial.getOpenFileName(self, "Choose file", QDir.homePath())
+            if self.firstOpen:
+                name = dial.getOpenFileName(self, "Choose file", QDir.homePath())
+                self.firstOpen = False
+            else:
+                name = dial.getOpenFileName(self, "Choose file")
             file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
             parts = file.split(os.path.sep)
@@ -377,7 +393,11 @@ class Window(MainUI):
 
         #Получение нужного для добавления файла
         try:
-            name = dial.getOpenFileName(self, "Choose file", QDir.homePath()) 
+            if self.firstOpen:
+                name = dial.getOpenFileName(self, "Choose file", QDir.homePath()) 
+                self.firstOpen = False
+            else:
+                name = dial.getOpenFileName(self, "Choose file") 
             file = str(name)[2:-6-self.filepathStrNum]  #('C:/Users/Nikita/Desktop/spiral iz chiesl.py', '')
             file = file.replace('/', os.path.sep)
             parts = file.split(os.path.sep)
@@ -417,7 +437,11 @@ class Window(MainUI):
         dial = QFileDialog()
         
         try:
-            name = dial.getExistingDirectory(self, "Choose folder", QDir.homePath())
+            if self.firstOpen:
+                name = dial.getExistingDirectory(self, "Choose folder", QDir.homePath())
+                self.firstOpen = False
+            else: 
+                name = dial.getExistingDirectory(self, "Choose folder")
             fold = os.path.basename(name)
             shutil.copytree(name, os.path.join('tmp', fold))
         except Exception:
@@ -437,7 +461,11 @@ class Window(MainUI):
         fold = None
         
         try:
-            name = dial.getExistingDirectory(self, "Choose folder", QDir.homePath())
+            if self.firstOpen:
+                name = dial.getExistingDirectory(self, "Choose folder", QDir.homePath())
+                self.firstOpen = False
+            else:
+                name = dial.getExistingDirectory(self, "Choose folder")
             fold = str(name)
         except Exception:
             dial.accept()

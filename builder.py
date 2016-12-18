@@ -1,5 +1,6 @@
 import os
 import shutil
+from message import Message
 from buildlog import BuildLog
 
 class Builder:
@@ -7,17 +8,31 @@ class Builder:
     @staticmethod
     def pyinstaller_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self):
         
-        for button in buttons_to_disable:
-            button.setDisabled(True)
+        try:
+            for button in buttons_to_disable:
+                button.setDisabled(True)
             
-        #Создаем временную папку по пути working_dir и компилируем в ней проект
-        os.chdir(working_dir)
-        shutil.rmtree('tmp2', ignore_errors=True)
-        shutil.copytree(source_folder, 'tmp2')
-        os.chdir('tmp2')
-        path = os.getcwd()
-        #os.system('pyinstaller ' + build_options + ' ' + source_name) #cmd \k + ...
-        command = 'pyinstaller ' + build_options + ' ' + source_name
+            #Создаем временную папку по пути working_dir и компилируем в ней проект
+            os.chdir(working_dir)
+            shutil.rmtree('tmp2', ignore_errors=True)
+            try:
+                shutil.copytree(source_folder, 'tmp2')
+            except Exception:
+                shutil.rmtree('tmp2', ignore_errors=True)
+                shutil.copytree(source_folder, 'tmp2')
+            os.chdir('tmp2')
+            path = os.getcwd()
+            #os.system('pyinstaller ' + build_options + ' ' + source_name) #cmd \k + ...
+            command = 'pyinstaller ' + build_options + ' ' + source_name
+             
+        except Exception:
+            Message.errorMessage(cur_self, ' ', 'Unknown error ocurred.\nYou can try to restart application.', os.path.join(working_dir, 'Resources', 'empt.ico'))
+            os.chdir(working_dir)
+            shutil.rmtree('tmp2', ignore_errors=True)
+            for button in buttons_to_disable:
+                button.setDisabled(False)
+            return
+        
         
         #Исполняем команду компиляции, выводя логи в QTextEdit
         cur_self.log = BuildLog(command, Builder._installer_continue, working_dir, buttons_to_disable,
@@ -75,20 +90,34 @@ class Builder:
             
     @staticmethod
     def cxfreeze_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable, cur_self):
-        for button in buttons_to_disable:
-            button.setDisabled(True)
+        try:
+            for button in buttons_to_disable:
+                button.setDisabled(True)
             
-        #Создаем временную папку по пути working_dir и компилируем в ней проект
-        os.chdir(working_dir)
-        shutil.rmtree('tmp2', ignore_errors=True)
-        shutil.copytree(source_folder, 'tmp2')
-        os.chdir('tmp2')
-        shutil.copyfile(setup_file, 'setup.py')
-        path = os.getcwd()
-        command = 'python setup.py build'
+            #Создаем временную папку по пути working_dir и компилируем в ней проект
+            os.chdir(working_dir)
+            shutil.rmtree('tmp2', ignore_errors=True)
+            try:
+                shutil.copytree(source_folder, 'tmp2')
+            except Exception:
+                shutil.rmtree('tmp2', ignore_errors=True)
+                shutil.copytree(source_folder, 'tmp2')
+            os.chdir('tmp2')
+            shutil.copyfile(setup_file, 'setup.py')
+            path = os.getcwd()
+            command = 'python setup.py build'
+        
+        except Exception:
+            Message.errorMessage(cur_self, ' ', 'Unknown error ocurred.\nYou can try to restart application.', os.path.join(working_dir, 'Resources', 'empt.ico'))
+            os.chdir(working_dir)
+            shutil.rmtree('tmp2', ignore_errors=True)
+            for button in buttons_to_disable:
+                button.setDisabled(False)
+            return
+        
         
         #Исполняем команду компиляции, выводя логи в QTextEdit
-        cur_self.log = BuildLog(command, Builder._cxfreeze_continue, working_dir,
+        cur_self.log = BuildLog(command, Builder._cxfreeze_continue, working_dir, buttons_to_disable,
                        [source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable, cur_self, path])
     
     

@@ -3,12 +3,15 @@ import os
 from message import Message
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtCore import QProcess
+from PyQt5.QtCore import QProcess, QDir
 
 class BuildLog(QMainWindow):
     def __init__(self, command, callback, projdir, disabled_buttons, args):    
    
         QMainWindow.__init__(self)
+        
+        #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
+        self.firstOpen = True
         
         rec = QApplication.desktop()
         rec = rec.screenGeometry()
@@ -73,7 +76,12 @@ class BuildLog(QMainWindow):
             dial.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'save.png'))) #не работает
         
             try:
-                name = dial.getSaveFileName(parent=self, caption='Сохранить', filter="Text file (*.txt)")
+                if self.firstOpen:
+                    name = dial.getSaveFileName(self, 'Save log', QDir.homePath(), "Text file (*.txt)")
+                    self.firstOpen = False
+                else:
+                    name = dial.getSaveFileName(parent=self, caption='Save log', filter="Text file (*.txt)")
+                    
                 full = str(name)[2:len(str(name))-6-17]  #('C:/Users/Nikita/Desktop/image.png', 'Text file (*.txt)')
                 
                 curdir = os.getcwd()
@@ -81,6 +89,7 @@ class BuildLog(QMainWindow):
                     f.write(str(self.edit.toPlainText()))
                     
                 shutil.copyfile('temporaryfilelogtodel.txt', full)
+                
                 os.remove(os.path.join(curdir, 'temporaryfilelogtodel.txt'))
                 
             except Exception:
@@ -92,7 +101,7 @@ class BuildLog(QMainWindow):
             return
         
         self.box = QMessageBox(self)
-        self.box.setText('Building is in progress.\nDo you want to terminate it?')
+        self.box.setText('Building is in progress.\nDo you want to terminate it?\nIt can lead to future errors.')
         self.box.setWindowTitle(' ')
         self.box.setFont(QFont("Calibri", 13))
         self.box.setIcon(QMessageBox.Warning)
@@ -106,11 +115,11 @@ class BuildLog(QMainWindow):
         
         ans = self.box.exec_()
         
-        
         if ans == QMessageBox.Yes:
             self.qProcess.kill()
             os.chdir(self.projdir)
-            shutil.rmtree('tmp2', ignore_errors=True) 
+            shutil.rmtree('tmp2', ignore_errors=True)
+            shutil.rmtree('tmp2', ignore_errors=True)
             for button in self.disabled_buttons:
                 button.setDisabled(False)
             self.killed = True

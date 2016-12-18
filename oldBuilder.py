@@ -1,33 +1,21 @@
 import os
 import shutil
-from buildlog import BuildLog
+import threading
 
 class Builder:
     
     @staticmethod
-    def pyinstaller_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self):
-        
-        for button in buttons_to_disable:
-            button.setDisabled(True)
-            
-        #Создаем временную папку по пути working_dir и компилируем в ней проект
-        os.chdir(working_dir)
-        shutil.rmtree('tmp2', ignore_errors=True)
-        shutil.copytree(source_folder, 'tmp2')
-        os.chdir('tmp2')
-        path = os.getcwd()
-        #os.system('pyinstaller ' + build_options + ' ' + source_name) #cmd \k + ...
-        command = 'pyinstaller ' + build_options + ' ' + source_name
-        
-        #Исполняем команду компиляции, выводя логи в QTextEdit
-        cur_self.log = BuildLog(command, Builder._installer_continue, working_dir,
-                       [source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self, path])
-        
-            
-    #Продолжение работы pyinstaller_build        
-    @staticmethod        
-    def _installer_continue(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self, path):
+    def _pyinstaller_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options='', buttons_to_disable=None, cur_self=None):
         try:
+            for button in buttons_to_disable:
+                button.setDisabled(True)
+            #Создаем временную папку по пути working_dir и компилируем в ней проект
+            os.chdir(working_dir)
+            shutil.copytree(source_folder, 'tmp2')
+            os.chdir('tmp2')
+            path = os.getcwd()
+            os.system('pyinstaller ' + build_options + ' ' + source_name) #cmd \k + ...
+            
             #Создаем папку с проетом project_name по пути build_target, помещаем в нее include files(из include_folder) 
             #и скомпилированный проект
             if not (source_name.split('.')[0] in os.listdir(os.path.join(path, 'dist'))): # Путь к папке со скомпилированным проектом зависит от
@@ -72,30 +60,29 @@ class Builder:
             for button in buttons_to_disable:
                 button.setDisabled(False)
          
-            
+         
     @staticmethod
-    def cxfreeze_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable, cur_self):
-        for button in buttons_to_disable:
-            button.setDisabled(True)
-            
-        #Создаем временную папку по пути working_dir и компилируем в ней проект
-        os.chdir(working_dir)
-        shutil.rmtree('tmp2', ignore_errors=True)
-        shutil.copytree(source_folder, 'tmp2')
-        os.chdir('tmp2')
-        shutil.copyfile(setup_file, 'setup.py')
-        path = os.getcwd()
-        command = 'python setup.py build'
+    def pyinstaller_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options='', buttons_to_disable=None, cur_self=None):
+        #Запускаем метод в новом потоке чтобы не зависло главное окно с интерфейсом(на случай если такое имеется)
+        t = threading.Thread(target=Builder._pyinstaller_build, args=(source_name, source_folder, working_dir, project_name, 
+                                                                     build_target, includes_folder, build_options, buttons_to_disable, cur_self))
+        t.start()
         
-        #Исполняем команду компиляции, выводя логи в QTextEdit
-        cur_self.log = BuildLog(command, Builder._cxfreeze_continue, working_dir,
-                       [source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable, cur_self, path])
-    
-    
-    #Продолжение работы cxfreeze_build 
-    @staticmethod        
-    def _cxfreeze_continue(source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable, cut_self, path):
+        
+        
+    @staticmethod
+    def _cxfreeze_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable=None, cur_self=None):
         try:
+            for button in buttons_to_disable:
+                button.setDisabled(True)
+            #Создаем временную папку по пути working_dir и компилируем в ней проект
+            os.chdir(working_dir)
+            shutil.copytree(source_folder, 'tmp2')
+            os.chdir('tmp2')
+            shutil.copyfile(setup_file, 'setup.py')
+            path = os.getcwd()
+            os.system('python setup.py build')
+            
             #Создаем папку с проетом project_name по пути build_target, помещаем в нее include files(из include_folder) 
             #и скомпилированный проект
             os.chdir(path)
@@ -128,5 +115,10 @@ class Builder:
                 button.setDisabled(False)
             
             
-    
+    @staticmethod            
+    def cxfreeze_build(source_name, source_folder, working_dir, project_name, build_target, includes_folder, setup_file, buttons_to_disable=None, cur_self=None):
+        #Запускаем метод в новом потоке чтобы не зависло главное окно с интерфейсом(на случай если такое имеется)
+        t2 = threading.Thread(target=Builder._cxfreeze_build, args=(source_name, source_folder, working_dir, project_name, 
+                                                                     build_target, includes_folder, setup_file, buttons_to_disable, cur_self))
+        t2.start()
             

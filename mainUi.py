@@ -11,10 +11,10 @@ class MainUI(QMainWindow):
     def initUI(self):
         rec = QApplication.desktop()
         rec = rec.screenGeometry()
-        self.screen_width, self.screen_height = rec.width(), rec.height()
+        self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
-        top_field_width = 0.173 * self.screen_width
-        top_field_height = 0.037 * self.screen_height
+        top_field_width = 0.173 * self.screenWidth
+        top_field_height = 0.037 * self.screenHeight
         
         self.framepal = QPalette()
         self.framepal.setColor(self.backgroundRole(), QColor(240, 240, 240)) 
@@ -23,52 +23,52 @@ class MainUI(QMainWindow):
         self.topframe.setFrameShape(QFrame.StyledPanel)
         self.topframe.setPalette(self.framepal)
         self.topframe.setAutoFillBackground(True)
-        self.topframe.resize(0.307 * self.screen_width, 0.22 * self.screen_height)
-        self.topframe.move(0.01 * self.screen_width, 0.037 * self.screen_height)
+        self.topframe.resize(0.307 * self.screenWidth, 0.22 * self.screenHeight)
+        self.topframe.move(0.01 * self.screenWidth, 0.037 * self.screenHeight)
         
         self.lbl1 = QLabel('Enter poject name : ', self.topframe)
         self.lbl1.setFont(QFont('Calibri', 17))
-        self.lbl1.move(10 / 1920 * self.screen_width, 15 / 1080 * self.screen_height)
+        self.lbl1.move(10 / 1920 * self.screenWidth, 15 / 1080 * self.screenHeight)
         
         self.le = QLineEdit(self.topframe)
         self.le.resize(top_field_width, top_field_height)
-        self.le.move(243 / 1920 * self.screen_width, 16 / 1080 * self.screen_height)
+        self.le.move(243 / 1920 * self.screenWidth, 16 / 1080 * self.screenHeight)
         self.le.setFont(QFont('Calibri', 15))
         
         self.srclbl = QLabel('Source code file : ', self.topframe)
         self.srclbl.setFont(QFont('Calibri', 17))
-        self.srclbl.move(10 / 1920 * self.screen_width, 75 / 1080 * self.screen_height)
+        self.srclbl.move(10 / 1920 * self.screenWidth, 75 / 1080 * self.screenHeight)
         
         self.lt = QListWidget(self.topframe)
         self.lt.resize(top_field_width, top_field_height)
-        self.lt.move(243 / 1920 * self.screen_width, 74 / 1080 * self.screen_height)
+        self.lt.move(243 / 1920 * self.screenWidth, 74 / 1080 * self.screenHeight)
         self.lt.setFont(QFont('Calibri', 15))
-        self.lt.setIconSize(QSize(25 / 1080 * self.screen_height, 25 / 1080 * self.screen_height))
+        self.lt.setIconSize(QSize(25 / 1080 * self.screenHeight, 25 / 1080 * self.screenHeight))
         self.lt.setContextMenuPolicy(Qt.CustomContextMenu)
         
         self.lbln = QLabel('Build target folder : ', self.topframe)
         self.lbln.setFont(QFont('Calibri', 17))
-        self.lbln.move(10 / 1920 * self.screen_width, 133 / 1080 * self.screen_height)
+        self.lbln.move(10 / 1920 * self.screenWidth, 133 / 1080 * self.screenHeight)
         
         self.folle = QLineEdit(self.topframe)
         self.folle.resize(top_field_width, top_field_height)
-        self.folle.move(243 / 1920 * self.screen_width, 134 / 1080 * self.screen_height)
+        self.folle.move(243 / 1920 * self.screenWidth, 134 / 1080 * self.screenHeight)
         self.folle.setFont(QFont('Calibri', 15))
         self.folle.setReadOnly(True)
         
         self.choosebtn = QPushButton('Choose file', self.topframe)
-        self.choosebtn.move(10 / 1920 * self.screen_width, 185 / 1080 * self.screen_height)
-        self.choosebtn.resize(0.07 * self.screen_width, 0.037 * self.screen_height)
+        self.choosebtn.move(10 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
+        self.choosebtn.resize(0.07 * self.screenWidth, 0.037 * self.screenHeight)
         self.choosebtn.setFont(QFont('Calibri', 13))
         
         self.choosefoldbtn = QPushButton('Choose folder', self.topframe)
-        self.choosefoldbtn.move(155 / 1920 * self.screen_width, 185 / 1080 * self.screen_height)
-        self.choosefoldbtn.resize(0.07 * self.screen_width, 0.037 * self.screen_height)
+        self.choosefoldbtn.move(155 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
+        self.choosefoldbtn.resize(0.07 * self.screenWidth, 0.037 * self.screenHeight)
         self.choosefoldbtn.setFont(QFont('Calibri', 13))
         
         self.warnlbl = QLabel('                                                                    ', self.topframe)
         self.warnlbl.setFont(QFont('Calibri', 14))
-        self.warnlbl.move(294 / 1920 * self.screen_width, 190 / 1080 * self.screen_height)
+        self.warnlbl.move(294 / 1920 * self.screenWidth, 190 / 1080 * self.screenHeight)
         self.warnlbl.setStyleSheet("QLabel { color : red; }")
         
 
@@ -76,58 +76,58 @@ class MainUI(QMainWindow):
         self.leftframe.setFrameShape(QFrame.StyledPanel)
         self.leftframe.setPalette(self.framepal)
         self.leftframe.setAutoFillBackground(True)
-        self.leftframe.resize(0.106 * self.screen_width, 0.351 * self.screen_height)
-        self.leftframe.move(20 / 1920 * self.screen_width, 290 / 1080 * self.screen_height)
+        self.leftframe.resize(0.106 * self.screenWidth, 0.351 * self.screenHeight)
+        self.leftframe.move(20 / 1920 * self.screenWidth, 290 / 1080 * self.screenHeight)
         
         self.lbl2 = QLabel('Build tool : ', self.leftframe)
         self.lbl2.setFont(QFont('Calibri', 16))
-        self.lbl2.move(10 / 1920 * self.screen_width, 15 / 1080 * self.screen_height)
+        self.lbl2.move(10 / 1920 * self.screenWidth, 15 / 1080 * self.screenHeight)
         
         self.toolle = QLineEdit(self.leftframe)
-        self.toolle.resize(182 / 1920 * self.screen_width, 37 / 1080 * self.screen_height)
-        self.toolle.move(10 / 1920 * self.screen_width, 60 / 1080 * self.screen_height)
+        self.toolle.resize(182 / 1920 * self.screenWidth, 37 / 1080 * self.screenHeight)
+        self.toolle.move(10 / 1920 * self.screenWidth, 60 / 1080 * self.screenHeight)
         self.toolle.setFont(QFont('Calibri', 14))
         self.toolle.setReadOnly(True)
         
         self.settingsbtn = QPushButton('Settings', self.leftframe)
-        self.settingsbtn.move(30 / 1920 * self.screen_width, 115 / 1080 * self.screen_height)
-        self.settingsbtn.resize(140 / 1920 * self.screen_width, 45 / 1080 * self.screen_height)
+        self.settingsbtn.move(30 / 1920 * self.screenWidth, 115 / 1080 * self.screenHeight)
+        self.settingsbtn.resize(140 / 1920 * self.screenWidth, 45 / 1080 * self.screenHeight)
         self.settingsbtn.setFont(QFont('Calibri', 14))
         
         
         self.buildbtn = QPushButton('Build', self.leftframe)
-        self.buildbtn.move(17 / 1920 * self.screen_width, 311 / 1080 * self.screen_height)
-        self.buildbtn.resize(170 / 1920 * self.screen_width, 50 / 1080 * self.screen_height)
+        self.buildbtn.move(17 / 1920 * self.screenWidth, 311 / 1080 * self.screenHeight)
+        self.buildbtn.resize(170 / 1920 * self.screenWidth, 50 / 1080 * self.screenHeight)
         self.buildbtn.setFont(QFont('Calibri', 15))
         
         self.rightframe = QFrame(self)
         self.rightframe.setFrameShape(QFrame.StyledPanel)
         self.rightframe.setPalette(self.framepal)
         self.rightframe.setAutoFillBackground(True)
-        self.rightframe.resize(0.192 * self.screen_width, 0.351 * self.screen_height)
-        self.rightframe.move(240 / 1920 * self.screen_width, 290 / 1080 * self.screen_height)
+        self.rightframe.resize(0.192 * self.screenWidth, 0.351 * self.screenHeight)
+        self.rightframe.move(240 / 1920 * self.screenWidth, 290 / 1080 * self.screenHeight)
         
         self.list = QListWidget(self.rightframe)
-        self.list.resize(350 / 1920 * self.screen_width, 250 / 1080 * self.screen_height)
-        self.list.move(9 / 1920 * self.screen_width, 46 / 1080 * self.screen_height)
-        self.list.setIconSize(QSize(27 / 1080 * self.screen_height, 27 / 1080 * self.screen_height))
+        self.list.resize(350 / 1920 * self.screenWidth, 250 / 1080 * self.screenHeight)
+        self.list.move(9 / 1920 * self.screenWidth, 46 / 1080 * self.screenHeight)
+        self.list.setIconSize(QSize(27 / 1080 * self.screenHeight, 27 / 1080 * self.screenHeight))
         self.list.setFont(QFont('Calibri', 15))
         #self.list.setSelectionMode(QAbstractItemView.ExtendedSelection)
         #self.list.setDragDropMode(QAbstractItemView.NoDragDrop)
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
         
         self.lbl4 = QLabel('Include files : ', self.rightframe)
-        self.lbl4.move(10 / 1920 * self.screen_width, 5 / 1080 * self.screen_height)
+        self.lbl4.move(10 / 1920 * self.screenWidth, 5 / 1080 * self.screenHeight)
         self.lbl4.setFont(QFont('Calibri', 15))
         
         self.addbtn = QPushButton('Add', self.rightframe)
-        self.addbtn.move(8 / 1920 * self.screen_width, 315 / 1080 * self.screen_height)
-        self.addbtn.resize(135 / 1920 * self.screen_width, 46 / 1080 * self.screen_height)
+        self.addbtn.move(8 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)
+        self.addbtn.resize(135 / 1920 * self.screenWidth, 46 / 1080 * self.screenHeight)
         self.addbtn.setFont(QFont('Calibri', 14))
         
         self.delbtn = QPushButton('Remove', self.rightframe)
-        self.delbtn.move(225 / 1920 * self.screen_width, 315 / 1080 * self.screen_height)
-        self.delbtn.resize(135  / 1920 * self.screen_width, 46 / 1080 * self.screen_height)
+        self.delbtn.move(225 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)
+        self.delbtn.resize(135  / 1920 * self.screenWidth, 46 / 1080 * self.screenHeight)
         self.delbtn.setFont(QFont('Calibri', 14))
     
         

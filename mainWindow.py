@@ -4,7 +4,7 @@ import pickle
 import webbrowser
 import sys
 import subprocess
-from PyQt5.QtWidgets import (QListWidgetItem, QMainWindow, QFileDialog, QAction, QMenu, qApp)
+from PyQt5.QtWidgets import QListWidgetItem, QMainWindow, QFileDialog, QAction, QMenu, qApp
 from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtCore import Qt, QSize, QPoint, QDir
 from builder import Builder
@@ -159,7 +159,7 @@ class Window(MainUI):
         pal.setColor(role, QColor(252, 252, 252)) #QColor(255, 252, 221)
         
         
-        self.setFixedSize(0.328 * self.screen_width, 0.635 * self.screen_height)
+        self.setFixedSize(0.328 * self.screenWidth, 0.635 * self.screenHeight)
         self.setWindowTitle('pyBuildManager') #pyBuilder (old)
         self.setWindowIcon(QIcon(os.path.join(self.resfolder, 'pyic.ico')))
         self.setPalette(pal)
@@ -307,13 +307,13 @@ class Window(MainUI):
                 
                 Builder.pyinstaller_build(source_name=self.source, source_folder=src, working_dir=self.projectdir, 
                                           project_name=self.le.text(), build_target=self.folder, includes_folder=src, 
-                                          build_options=build_info[1], buttons_to_disable=btns_to_disable)
+                                          build_options=build_info[1], buttons_to_disable=btns_to_disable, cur_self=self)
             
             elif build_info[0] == 'cx_Freeze':
                 
                 Builder.cxfreeze_build(source_name=self.source, source_folder=src, working_dir=self.projectdir, 
                                        project_name=self.le.text(), build_target=self.folder, includes_folder=src,
-                                       setup_file=build_info[1], buttons_to_disable=btns_to_disable)
+                                       setup_file=build_info[1], buttons_to_disable=btns_to_disable, cur_self=self)
             else:
                 pass
         
@@ -359,7 +359,7 @@ class Window(MainUI):
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))
-        a.setSizeHint(QSize(100 / 1920 * self.screen_width, 33 / 1080 * self.screen_height))
+        a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight))
         self.list.addItem(a)
         
 
@@ -406,7 +406,7 @@ class Window(MainUI):
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))
-        a.setSizeHint(QSize(100 / 1920 * self.screen_width, 35 / 1080 * self.screen_height))
+        a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 35 / 1080 * self.screenHeight))
         a.setFlags(a.flags() and Qt.ItemIsEnabled)
         self.lt.addItem(a)
         
@@ -425,7 +425,7 @@ class Window(MainUI):
         
         a = QListWidgetItem(fold)
         a.setIcon(QIcon(os.path.join('Resources','folder.ico')))
-        a.setSizeHint(QSize(100 / 1920 * self.screen_width, 33 / 1080 * self.screen_height))
+        a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight))
         self.list.addItem(a)
         
 

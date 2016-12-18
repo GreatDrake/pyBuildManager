@@ -25,31 +25,31 @@ class Settings(QDialog):
         
         rec = QApplication.desktop()
         rec = rec.screenGeometry()
-        self.screen_width, self.screen_height = rec.width(), rec.height()
+        self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
         self.ok = QPushButton('OK', self)
-        self.ok.move(295 / 1920 * self.screen_width, 225 / 1080 * self.screen_height)
-        self.ok.resize(100 / 1920 * self.screen_width, 34 / 1080 * self.screen_height)
+        self.ok.move(295 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
+        self.ok.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
         self.ok.setFont(QFont('Calibri Bold', 11))
         self.ok.clicked.connect(self.okay)
         
         self.cancel = QPushButton('Cancel', self)
-        self.cancel.move(20 / 1920 * self.screen_width, 225 / 1080 * self.screen_height)
-        self.cancel.resize(100 / 1920 * self.screen_width, 34 / 1080 * self.screen_height)
+        self.cancel.move(20 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
+        self.cancel.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
         self.cancel.setFont(QFont('Calibri Bold', 11))
         self.cancel.clicked.connect(self.done)
         
         
         self.lbl = QLabel("Build tool : ", self)
         self.lbl.setFont(QFont("Calibri", 17))
-        self.lbl.move(60 / 1920 * self.screen_width, 20 / 1080 * self.screen_height) 
+        self.lbl.move(60 / 1920 * self.screenWidth, 20 / 1080 * self.screenHeight) 
         
         self.getBuilders()
         
         self.bldbox = QComboBox(self)
         self.bldbox.addItems(self.builders)
-        self.bldbox.resize(150 / 1920 * self.screen_width, 34 / 1080 * self.screen_height)
-        self.bldbox.move(190 / 1920 * self.screen_width, 23 / 1080 * self.screen_height)
+        self.bldbox.resize(150 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
+        self.bldbox.move(190 / 1920 * self.screenWidth, 23 / 1080 * self.screenHeight)
         self.bldbox.setFont(QFont('Calibri', 13))
         self.bldbox.activated[str].connect(self.changeBuilder)
         
@@ -59,33 +59,33 @@ class Settings(QDialog):
           
         self.lbl2 = QLabel("Setup file : ", self)
         self.lbl2.setFont(QFont("Calibri", 16))
-        self.lbl2.move(10 / 1920 * self.screen_width, 95 / 1080 * self.screen_height) 
+        self.lbl2.move(10 / 1920 * self.screenWidth, 95 / 1080 * self.screenHeight) 
         self.lbl2.hide()
         
         self.choosebtn = QPushButton('Choose', self)
-        self.choosebtn.move(317 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
-        self.choosebtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
+        self.choosebtn.move(317 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
+        self.choosebtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
         self.choosebtn.setFont(QFont('Calibri', 13))
         self.choosebtn.clicked.connect(self.chooseSetupFile)
         self.choosebtn.hide()
         
         self.createbtn = QPushButton("Create", self)
-        self.createbtn.move(226 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
-        self.createbtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
+        self.createbtn.move(226 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
+        self.createbtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
         self.createbtn.setFont(QFont('Calibri', 13))
         self.createbtn.clicked.connect(self.createSetupFile)
         self.createbtn.hide()
         
         self.editbtn = QPushButton("Edit", self)
-        self.editbtn.move(135 / 1920 * self.screen_width, 98 / 1080 * self.screen_height)
-        self.editbtn.resize(86 / 1920 * self.screen_width, 32 / 1080 * self.screen_height)
+        self.editbtn.move(135 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
+        self.editbtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
         self.editbtn.setFont(QFont('Calibri', 13))
         self.editbtn.clicked.connect(self.openSetupInIDLE)
         self.editbtn.hide()
         
         self.cxbldle = QLineEdit(self)
-        self.cxbldle.move(10 / 1920 * self.screen_width, 145 / 1080 * self.screen_height)
-        self.cxbldle.resize(395 / 1920 * self.screen_width, 37 / 1080 * self.screen_height)
+        self.cxbldle.move(10 / 1920 * self.screenWidth, 145 / 1080 * self.screenHeight)
+        self.cxbldle.resize(395 / 1920 * self.screenWidth, 37 / 1080 * self.screenHeight)
         self.cxbldle.setFont(QFont('Calibri', 13))
         self.cxbldle.setReadOnly(True)
         self.cxbldle.hide()
@@ -94,7 +94,7 @@ class Settings(QDialog):
         #self.warnlbl.adjustSize()
         #self.warnlbl.setStyleSheet("QLabel { color : red; }")
         #self.warnlbl.setFont(QFont("Calibri", 14))
-        #self.warnlbl.move(10 / 1920 * self.screen_width, 185 / 1080 * self.screen_height)
+        #self.warnlbl.move(10 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
         #self.warnlbl.hide()
         
         ############################################################################################## 
@@ -107,12 +107,12 @@ class Settings(QDialog):
         
         self.lbl3 = QLabel("Build options : ", self)
         self.lbl3.setFont(QFont("Calibri", 16))
-        self.lbl3.move(10 / 1920 * self.screen_width, 95 / 1080 * self.screen_height) 
+        self.lbl3.move(10 / 1920 * self.screenWidth, 95 / 1080 * self.screenHeight) 
         self.lbl3.hide()
         
         self.instbldle = QLineEdit(self)
-        self.instbldle.move(10 / 1920 * self.screen_width, 145 / 1080 * self.screen_height)
-        self.instbldle.resize(395 / 1920 * self.screen_width, 37 / 1080 * self.screen_height)
+        self.instbldle.move(10 / 1920 * self.screenWidth, 145 / 1080 * self.screenHeight)
+        self.instbldle.resize(395 / 1920 * self.screenWidth, 37 / 1080 * self.screenHeight)
         self.instbldle.setFont(QFont('Calibri', 13))
         self.instbldle.hide()
         self.instbldle.setPlaceholderText('For example: --noconsole, or leave empty')
@@ -126,7 +126,7 @@ class Settings(QDialog):
         role = self.backgroundRole()
         pal.setColor(role, QColor(248, 248, 248))
         
-        self.setFixedSize(415 / 1920 * self.screen_width, 285 / 1920 * self.screen_width)
+        self.setFixedSize(415 / 1920 * self.screenWidth, 285 / 1920 * self.screenWidth)
         self.setWindowTitle("Settings")
         self.setWindowIcon(QIcon(os.path.join("Resources", "settings.png")))
         self.setPalette(pal)

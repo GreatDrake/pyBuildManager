@@ -66,12 +66,11 @@ class MainUI(QMainWindow):
         self.choosefoldbtn.resize(0.07 * self.screenWidth, 0.037 * self.screenHeight)
         self.choosefoldbtn.setFont(QFont('Calibri', 13))
         
-        self.warnlbl = QLabel('                                                                    ', self.topframe)
-        self.warnlbl.setFont(QFont('Calibri', 14))
-        self.warnlbl.move(294 / 1920 * self.screenWidth, 190 / 1080 * self.screenHeight)
-        self.warnlbl.setStyleSheet("QLabel { color : red; }")
+        #self.warnlbl = QLabel('                                                                    ', self.topframe)
+        #self.warnlbl.setFont(QFont('Calibri', 14))
+        #self.warnlbl.move(294 / 1920 * self.screenWidth, 190 / 1080 * self.screenHeight)
+        #self.warnlbl.setStyleSheet("QLabel { color : red; }")
         
-
         self.leftframe = QFrame(self)
         self.leftframe.setFrameShape(QFrame.StyledPanel)
         self.leftframe.setPalette(self.framepal)

@@ -12,7 +12,7 @@ class About(QDialog):
         rec = rec.screenGeometry()
         self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
-        self.lbl = QLabel("pyBuildManager\nbeta 0.7\n\n©Nikita Morozov 2016", self)
+        self.lbl = QLabel("pyBuildManager\nbeta 0.75\n\n©Nikita Morozov 2016", self)
         self.lbl.setFont(QFont("Calibri", 15))
         self.lbl.move(10 / 1920 * self.screenWidth, 10 / 1080 * self.screenHeight) 
         

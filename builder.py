@@ -20,7 +20,7 @@ class Builder:
         command = 'pyinstaller ' + build_options + ' ' + source_name
         
         #Исполняем команду компиляции, выводя логи в QTextEdit
-        cur_self.log = BuildLog(command, Builder._installer_continue, working_dir,
+        cur_self.log = BuildLog(command, Builder._installer_continue, working_dir, buttons_to_disable,
                        [source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self, path])
         
             

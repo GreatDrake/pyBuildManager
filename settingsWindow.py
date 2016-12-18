@@ -131,7 +131,8 @@ class Settings(QDialog):
         self.setWindowIcon(QIcon(os.path.join("Resources", "settings.png")))
         self.setPalette(pal)
         self.show()
-        
+    
+    #Создать setup файл    
     def createSetupFile(self):
         curdir = os.getcwd() #После работы необходимо будет вернуться в директорию, в которой мы находились на моменты вызова метода
         try:
@@ -207,8 +208,7 @@ class Settings(QDialog):
                 f.close()
             except Exception:
                 pass
-        
-            
+          
         if not settings:
             if str(self.bldbox.currentText()):
                 settings = [str(self.bldbox.currentText()), '']
@@ -330,7 +330,7 @@ class Settings(QDialog):
             if not path or path.isspace():
                 #self.warnlbl.setText('You have to specify setup file')
                 #self.warnlbl.adjustSize()
-                Message.warningMessage(self, ' ', 'You have to specify\nsetup file')
+                Message.warningMessage(self, ' ', 'You have to specify setup file')
             else:
                 self.le.setText('cx_Freeze')
                 with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:

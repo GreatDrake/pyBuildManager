@@ -169,6 +169,7 @@ class Window(MainUI):
     def closeEvent(self, event):
         #Перед выходом необходимо удалить временную папку с проектом
         shutil.rmtree(os.path.join(self.projectdir, 'tmp'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectdir, 'tmp2'), ignore_errors=True)
         event.accept()
 
         
@@ -180,7 +181,7 @@ class Window(MainUI):
 
     def showAboutDialog(self):
         dial = About()
-        dial.setWindowFlags(Qt.Widget)
+        dial.setWindowFlags(Qt.Window)
         dial.exec_()
         
     def showSettings(self):
@@ -395,7 +396,7 @@ class Window(MainUI):
             return
         else:
             self.source = parts[-1]
-            self.warnlbl.setText('                                                                    ')
+            #self.warnlbl.setText('                                                                    ')
 
         #Получение нужной иконки исходя из расширения файла
         ext = '.' + parts[-1].split('.')[1]

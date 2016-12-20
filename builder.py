@@ -1,7 +1,7 @@
 import os
 import shutil
 from message import Message
-from buildLog import BuildLog
+from buildlog import BuildLog
 
 class Builder:
     

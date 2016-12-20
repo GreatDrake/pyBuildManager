@@ -142,7 +142,7 @@ class Settings(QDialog):
         role = self.backgroundRole()
         pal.setColor(role, QColor(248, 248, 248))
         
-        self.setFixedSize(415 / 1920 * self.screenWidth, 0.686 * 415 / 1920 * self.screenWidth)
+        self.setFixedSize(415 / 1920 * self.screenWidth, 285 / 1080 * self.screenHeight)
         self.setWindowTitle("Settings")
         self.setWindowIcon(QIcon(os.path.join("Resources", "settings.png")))
         self.setPalette(pal)

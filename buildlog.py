@@ -56,7 +56,7 @@ class BuildLog(QMainWindow):
         
         self.setWindowTitle("Build log")
         self.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'text.png')))
-        self.resize(1000 * self.screenWidth / 1920, 0.8 * 1000 * self.screenWidth / 1920)
+        self.resize(1000 * self.screenWidth / 1920, 800 / 1080 * self.screenHeight)
         self.show()
     
     #Получение данных  

@@ -30,7 +30,7 @@ class About(QDialog):
         self.btn.setFont(font)
         self.btn.clicked.connect(self.done)
         
-        self.setFixedSize(300 / 1920 * self.screenWidth, 0.66 * 300 / 1920 * self.screenWidth)
+        self.setFixedSize(300 / 1920 * self.screenWidth, 200 / 1080 * self.screenHeight)
         self.setWindowTitle("About")
         self.setWindowIcon(QIcon(os.path.join("Resources", "question.png")))
         self.setPalette(pal)

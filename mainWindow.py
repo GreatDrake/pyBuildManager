@@ -167,7 +167,7 @@ class Window(MainUI):
         pal.setColor(role, QColor(252, 252, 252)) #QColor(255, 252, 221)
         
         
-        self.setFixedSize(0.328 * self.screenWidth, 0.635 * self.screenHeight)
+        self.setFixedSize(0.328 * self.screenWidth, 1.087 * 0.328 * self.screenWidth)
         self.setWindowTitle('pyBuildManager') #pyBuilder (old)
         self.setWindowIcon(QIcon(os.path.join(self.resfolder, 'pyic.ico')))
         self.setPalette(pal)

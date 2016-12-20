@@ -1,5 +1,5 @@
 import os
-from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton
+from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton, QApplication
 from PyQt5.QtGui import QIcon, QFont
 
 #Класс для вывода различных QMessageBox с сообщениями
@@ -7,10 +7,15 @@ class Message(QWidget):
     
     @staticmethod
     def errorMessage(cur_self, title, text, icon=None):
+        rec = QApplication.desktop()
+        rec = rec.screenGeometry()
+        screenWidth = rec.width()
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        box.setFont(QFont("Calibri", 13))
+        font = QFont("Calibri")
+        font.setPixelSize(23 / 1920 * screenWidth)
+        box.setFont(font)
         box.setIcon(QMessageBox.Critical)
         if icon is None:
             box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
@@ -19,16 +24,22 @@ class Message(QWidget):
         box.setStandardButtons(QMessageBox.Ok)
         
         button = box.findChild(QPushButton)
-        button.setFont(QFont("Calibri", 11))
+        font.setPixelSize(22 / 1920 * screenWidth)
+        button.setFont(font)
         
         box.exec_()
         
     @staticmethod
     def warningMessage(cur_self, title, text, icon=None):
+        rec = QApplication.desktop()
+        rec = rec.screenGeometry()
+        screenWidth = rec.width()
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        box.setFont(QFont("Calibri", 13))
+        font = QFont("Calibri")
+        font.setPixelSize(23 / 1920 * screenWidth)
+        box.setFont(font)
         box.setIcon(QMessageBox.Warning)
         if icon is None:
             box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
@@ -37,16 +48,22 @@ class Message(QWidget):
         box.setStandardButtons(QMessageBox.Ok)
         
         button = box.findChild(QPushButton)
-        button.setFont(QFont("Calibri", 11))
+        font.setPixelSize(22 / 1920 * screenWidth)
+        button.setFont(font)
         
         box.exec_()
     
     @staticmethod   
     def infoMessage(cur_self, title, text, icon=None):
+        rec = QApplication.desktop()
+        rec = rec.screenGeometry()
+        screenWidth = rec.width()
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        box.setFont(QFont("Calibri", 13))
+        font = QFont("Calibri")
+        font.setPixelSize(23 / 1920 * screenWidth)
+        box.setFont(font)
         box.setIcon(QMessageBox.Information)
         if icon is None:
             box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
@@ -55,7 +72,8 @@ class Message(QWidget):
         box.setStandardButtons(QMessageBox.Ok)
         
         button = box.findChild(QPushButton)
-        button.setFont(QFont("Calibri", 11))
+        font.setPixelSize(22 / 1920 * screenWidth)
+        button.setFont(font)
         
         box.exec_()
         

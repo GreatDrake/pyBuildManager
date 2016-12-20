@@ -27,7 +27,10 @@ class BuildLog(QMainWindow):
         self.disabled_buttons = disabled_buttons
    
         self.edit = QTextEdit(self)
-        self.edit.setFont(QFont('Calibri', 12))
+        self.edit.setReadOnly(True)
+        font = QFont("Calibri")
+        font.setPixelSize(20 / 1920 * self.screenWidth)
+        self.edit.setFont(font)
         
         self.setCentralWidget(self.edit)
         
@@ -43,30 +46,33 @@ class BuildLog(QMainWindow):
         fileMenu.addAction(exitAct)
         self.setMenuBar(menubar)
         
+        #Создаем новый процесс и в нем компилируем файл
         self.qProcess = QProcess()
         self.qProcess.setProcessChannelMode(QProcess.MergedChannels)   
         self.qProcess.start(command)
         self.qProcess.waitForStarted()
-        self.qProcess.readyReadStandardOutput.connect(self.readStdOutput)
+        self.qProcess.readyReadStandardOutput.connect(self.readStdOutput) #Сигнал вызывается при получении новых данных в выходной поток
         self.qProcess.finished.connect(self.onFinished)
         
         self.setWindowTitle("Build log")
         self.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'text.png')))
-        self.resize(1000 * self.screenWidth / 1920, 800 * self.screenHeight / 1080)
+        self.resize(1000 * self.screenWidth / 1920, 0.8 * 1000 * self.screenWidth / 1920)
         self.show()
-        
+    
+    #Получение данных  
     def readStdOutput(self):
         self.edit.append((str(self.qProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
-        #self.edit.append('\n')
-
+    
+    #Окончание работы потока
     def onFinished(self):
-        if self.killed:
+        if self.killed: #Поток прекращен вручную
             return
         
         if self.box:
             self.box.done(0)
         
         self.finished = True
+        #Передача управления вызвавшей функции
         self.callback(*self.args)
         Message.infoMessage(self, ' ', 'Finished. You can now check log for errors.', QIcon(os.path.join(self.projdir, 'Resources', 'empt.ico')))
         
@@ -88,6 +94,8 @@ class BuildLog(QMainWindow):
                 with open('temporaryfilelogtodel.txt', 'w') as f:
                     f.write(str(self.edit.toPlainText()))
                     
+                #Можно записать что-то еще в файл...
+                    
                 shutil.copyfile('temporaryfilelogtodel.txt', full)
                 
                 os.remove(os.path.join(curdir, 'temporaryfilelogtodel.txt'))
@@ -100,23 +108,27 @@ class BuildLog(QMainWindow):
             event.accept()
             return
         
+        #!!!Даже при открытии диалога процесс продолжает свою работу!!!
         self.box = QMessageBox(self)
         self.box.setText('Building is in progress.\nDo you want to terminate it?\nIt can lead to future errors.')
         self.box.setWindowTitle(' ')
-        self.box.setFont(QFont("Calibri", 13))
+        font = QFont("Calibri")
+        font.setPixelSize(23 / 1920 * self.screenWidth)
+        self.box.setFont(font)
         self.box.setIcon(QMessageBox.Warning)
         self.box.setWindowIcon(QIcon(os.path.join(self.projdir, "Resources", "empt.ico")))
         
         self.box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         
         buttons = self.box.findChildren(QPushButton)
-        buttons[0].setFont(QFont("Calibri", 11))
-        buttons[1].setFont(QFont("Calibri", 11))
+        font.setPixelSize(22 / 1920 * self.screenWidth)
+        buttons[0].setFont(font)
+        buttons[1].setFont(font)
         
         ans = self.box.exec_()
         
         if ans == QMessageBox.Yes:
-            self.qProcess.kill()
+            self.qProcess.kill() #Завершаем процесс и производим cleanup действия
             os.chdir(self.projdir)
             shutil.rmtree('tmp2', ignore_errors=True)
             shutil.rmtree('tmp2', ignore_errors=True)

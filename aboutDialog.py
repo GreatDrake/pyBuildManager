@@ -12,8 +12,11 @@ class About(QDialog):
         rec = rec.screenGeometry()
         self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
+        font = QFont("Calibri")
+        
         self.lbl = QLabel("pyBuildManager\nbeta 0.75\n\n©Nikita Morozov 2016", self)
-        self.lbl.setFont(QFont("Calibri", 15))
+        font.setPixelSize(25 / 1920 * self.screenWidth)
+        self.lbl.setFont(font)
         self.lbl.move(10 / 1920 * self.screenWidth, 10 / 1080 * self.screenHeight) 
         
         pal = self.palette()
@@ -23,10 +26,11 @@ class About(QDialog):
         self.btn = QPushButton("OK", self)
         self.btn.resize(90 / 1920 * self.screenWidth, 30 / 1080 * self.screenHeight)
         self.btn.move(200 / 1920 * self.screenWidth, 150 / 1080 * self.screenHeight)
-        self.btn.setFont(QFont("Calibri", 11))
+        font.setPixelSize(21 / 1920 * self.screenWidth)
+        self.btn.setFont(font)
         self.btn.clicked.connect(self.done)
         
-        self.setFixedSize(300 / 1920 * self.screenWidth, 200 / 1080 * self.screenHeight)
+        self.setFixedSize(300 / 1920 * self.screenWidth, 0.66 * 300 / 1920 * self.screenWidth)
         self.setWindowTitle("About")
         self.setWindowIcon(QIcon(os.path.join("Resources", "question.png")))
         self.setPalette(pal)

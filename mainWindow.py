@@ -21,6 +21,9 @@ class Window(MainUI):
         #Инициализируем весь интерфейс из класса MainUI
         MainUI.initUI(self)
         
+        #Для открытия папки в файловом менеджере ОС
+        self.foldToOpen = None
+        
         #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
         self.firstOpen = True
         
@@ -137,6 +140,10 @@ class Window(MainUI):
         self.manualAction = QAction(QIcon(os.path.join("Resources", "manual.png")), "&Manual", self)
         self.manualAction.triggered.connect(self.showManual)
         
+        self.openAction = QAction("&Open in explorer", self)
+        self.openAction.triggered.connect(self.openInExplorer)
+        
+        
         menubar = self.menuBar()
         
         fileMenu = menubar.addMenu('&File')
@@ -210,7 +217,11 @@ class Window(MainUI):
         item = self.list.itemAt(pos)
         menu = QMenu("&Menu", self)
         if item: #Пользователь кликнул по элементу
+            if hasattr(item, 'folderpath'):
+                menu.addAction(self.openAction)
+                self.foldToOpen = item.folderpath
             menu.addAction(self.delAct)
+        
         else: #Пользователь кликнул по пустому пространству QListWidget
             menu.addAction(self.addAct)
             menu.addAction(self.addFold)
@@ -227,6 +238,18 @@ class Window(MainUI):
             menu.addAction(self.idleAct)
         
             menu.exec_(self.lt.mapToGlobal(pos))
+    
+    
+    #Открыти папки в файловом менеджере os        
+    def openInExplorer(self):
+        if self.foldToOpen:
+            try:
+                if sys.platform == 'linux':
+                    os.system('xdg-open "%s"' % self.foldToOpen)
+                elif sys.platform == 'win32':
+                    os.startfile(self.foldToOpen)
+            except Exception:
+                pass
     
     
     #Открыть файл с исходным кодом в IDLE        
@@ -489,6 +512,7 @@ class Window(MainUI):
         a = QListWidgetItem(fold)
         a.setIcon(QIcon(os.path.join('Resources','folder.png')))
         a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight))
+        a.__dict__['folderpath'] = name
         self.list.addItem(a)
         
 

@@ -30,7 +30,10 @@ class Settings(QDialog):
         rec = rec.screenGeometry()
         self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         
         self.ok = QPushButton('OK', self)
         self.ok.move(295 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
@@ -181,7 +184,7 @@ class Settings(QDialog):
                 
                 try:
                     if hasattr(self, "fullsource"):
-                        command = idle + " " + self.fullsource
+                        command = idle + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
                         try:
                             subprocess.check_output()
@@ -195,7 +198,7 @@ class Settings(QDialog):
                 
                 try:
                     if hasattr(self, "fullsource"):
-                        command = idle + " " + self.fullsource
+                        command = idle + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\(source).py
                         try:
                             subprocess.check_output()
@@ -206,14 +209,14 @@ class Settings(QDialog):
             else:
                 try:
                     if hasattr(self, "fullsource"):
-                        command = 'idle3' + " " + self.fullsource
+                        command = 'idle3' + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) 
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
                             try:
                                 if hasattr(self, "fullsource"):
-                                    command = 'idle' + " " + self.fullsource
+                                    command = 'idle' + (' "%s"' % self.fullsource)
                                     subprocess.Popen(command, shell=True) 
                                     try:
                                         subprocess.check_output()
@@ -226,14 +229,14 @@ class Settings(QDialog):
         else:
             try:
                 if hasattr(self, "fullsource"):
-                        command = 'idle3' + " " + self.fullsource
+                        command = 'idle3' + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) 
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
                             try:
                                 if hasattr(self, "fullsource"):
-                                    command = 'idle' + " " + self.fullsource
+                                    command = 'idle' + (' "%s"' % self.fullsource)
                                     subprocess.Popen(command, shell=True) 
                                     try:
                                         subprocess.check_output()

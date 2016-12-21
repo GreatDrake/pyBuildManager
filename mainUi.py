@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import (QPushButton, QListWidget, QLineEdit, QFrame, QLabel, QMainWindow, QApplication)
+from PyQt5.QtWidgets import (QPushButton, QListWidget, QLineEdit, QFrame, QLabel, QMainWindow, QApplication, QAbstractItemView)
 from PyQt5.QtGui import QFont, QColor, QPalette
 from PyQt5.QtCore import Qt, QSize
+import sys
 
 #В этом классе описывается основной графический интерфейс пользователя
 class MainUI(QMainWindow):
@@ -16,7 +17,11 @@ class MainUI(QMainWindow):
         top_field_width = 0.173 * self.screenWidth
         top_field_height = 0.037 * self.screenHeight
         
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
+        
         
         self.framepal = QPalette()
         self.framepal.setColor(self.backgroundRole(), QColor(240, 240, 240)) 
@@ -125,7 +130,7 @@ class MainUI(QMainWindow):
         self.list.setIconSize(QSize(27 / 1080 * self.screenHeight, 27 / 1080 * self.screenHeight))
         font.setPixelSize(23 / 1920 * self.screenWidth)
         self.list.setFont(font)
-        #self.list.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.list.setSelectionMode(QAbstractItemView.SingleSelection)
         #self.list.setDragDropMode(QAbstractItemView.NoDragDrop)
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
         

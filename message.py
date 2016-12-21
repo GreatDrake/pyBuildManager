@@ -1,4 +1,5 @@
 import os
+import sys
 from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton, QApplication
 from PyQt5.QtGui import QIcon, QFont
 
@@ -13,7 +14,10 @@ class Message(QWidget):
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)
         box.setFont(font)
         box.setIcon(QMessageBox.Critical)
@@ -37,7 +41,10 @@ class Message(QWidget):
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)
         box.setFont(font)
         box.setIcon(QMessageBox.Warning)
@@ -61,7 +68,10 @@ class Message(QWidget):
         box = QMessageBox(cur_self)
         box.setText(text)
         box.setWindowTitle(title)
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)
         box.setFont(font)
         box.setIcon(QMessageBox.Information)

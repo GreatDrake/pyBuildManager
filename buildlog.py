@@ -1,5 +1,6 @@
 import shutil
 import os
+import sys
 from message import Message
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton
 from PyQt5.QtGui import QFont, QIcon
@@ -28,7 +29,10 @@ class BuildLog(QMainWindow):
    
         self.edit = QTextEdit(self)
         self.edit.setReadOnly(True)
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         font.setPixelSize(20 / 1920 * self.screenWidth)
         self.edit.setFont(font)
         
@@ -112,7 +116,10 @@ class BuildLog(QMainWindow):
         self.box = QMessageBox(self)
         self.box.setText('Building is in progress.\nDo you want to terminate it?\nIt can lead to future errors.')
         self.box.setWindowTitle(' ')
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * self.screenWidth)
         self.box.setFont(font)
         self.box.setIcon(QMessageBox.Warning)

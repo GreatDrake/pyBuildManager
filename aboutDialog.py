@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QPushButton
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 import os
+import sys
 
 #Диалоговое окно содержашее основную информацию о приложении
 class About(QDialog):
@@ -12,7 +13,10 @@ class About(QDialog):
         rec = rec.screenGeometry()
         self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
-        font = QFont("Calibri")
+        if sys.platform == 'linux':
+            font = QFont("Libaration Serif")
+        else:
+            font = QFont("Calibri")
         
         self.lbl = QLabel("pyBuildManager\nbeta 0.75\n\n©Nikita Morozov 2016", self)
         font.setPixelSize(25 / 1920 * self.screenWidth)

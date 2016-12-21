@@ -57,11 +57,12 @@ class Window(MainUI):
                            '.dll' : os.path.join(self.resfolder, 'dll.png' ),  '.html' : os.path.join(self.resfolder, 'html.png'),
                            '.htm' : os.path.join(self.resfolder, 'html.png'),  '.pyc'  : os.path.join(self.resfolder, 'pyt.png' ),
                            '.rar' : os.path.join(self.resfolder, 'rar.png' ),  '.zip'  : os.path.join(self.resfolder, 'zip.png' ),
-                           '.ico' : os.path.join(self.resfolder, 'ico.ico' ),  '.psd'  : os.path.join(self.resfolder, 'psd.png' ),
+                           '.ico' : os.path.join(self.resfolder, 'ico.png' ),  '.psd'  : os.path.join(self.resfolder, 'psd.png' ),
                            '.pyd' : os.path.join(self.resfolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resfolder, 'pyt.png' ),
                            '.pdf' : os.path.join(self.resfolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resfolder, 'exe.png' ),
                            '.css' : os.path.join(self.resfolder, 'css.png' ),  '.qss'  : os.path.join(self.resfolder, 'css.png' ),
-                           '.gif' : os.path.join(self.resfolder, 'gif.png' ),  '.js'   : os.path.join(self.resfolder, 'js.png'  )
+                           '.gif' : os.path.join(self.resfolder, 'gif.png' ),  '.js'   : os.path.join(self.resfolder, 'js.png'  ),
+                           '.xml' : os.path.join(self.resfolder, 'xml.png')
                            }
         
         self.source = None #source - файл с исходным кодом 
@@ -140,7 +141,7 @@ class Window(MainUI):
         self.manualAction = QAction(QIcon(os.path.join("Resources", "manual.png")), "&Manual", self)
         self.manualAction.triggered.connect(self.showManual)
         
-        self.openAction = QAction("&Open in explorer", self)
+        self.openAction = QAction("&Open in file manager", self)
         self.openAction.triggered.connect(self.openInExplorer)
         
         
@@ -199,12 +200,24 @@ class Window(MainUI):
     def showAboutDialog(self):
         dial = About()
         dial.setWindowFlags(Qt.Window)
+        
+        x, y = (self.x(), self.y())
+        x += self.width() / 2 - dial.width() / 2
+        y += self.height() / 2 - dial.height() / 2
+        dial.move(x, y)
+        
         dial.exec_()
         
         
     def showSettings(self):
         settings = Settings(self.toolle, self.projectdir)
         settings.setWindowFlags(Qt.Widget)
+        
+        x, y = (self.x(), self.y())
+        x += self.width() / 2 - settings.width() / 2
+        y += self.height() / 2 - settings.height() / 2
+        settings.move(x, y)
+        
         settings.exec_()
         
         
@@ -263,7 +276,7 @@ class Window(MainUI):
                 
                 try:
                     if hasattr(self, "fullsource"):
-                        command = idle + " " + self.fullsource
+                        command = idle + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
                         try:
                             subprocess.check_output()
@@ -277,7 +290,7 @@ class Window(MainUI):
                 
                 try:
                     if hasattr(self, "fullsource"):
-                        command = idle + " " + self.fullsource
+                        command = idle + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\(source).py
                         try:
                             subprocess.check_output()
@@ -288,14 +301,14 @@ class Window(MainUI):
             else:
                 try:
                     if hasattr(self, "fullsource"):
-                        command = 'idle3' + " " + self.fullsource
+                        command = 'idle3' + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) 
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
                             try:
                                 if hasattr(self, "fullsource"):
-                                    command = 'idle' + " " + self.fullsource
+                                    command = 'idle' + (' "%s"' % self.fullsource)
                                     subprocess.Popen(command, shell=True) 
                                     try:
                                         subprocess.check_output()
@@ -308,14 +321,14 @@ class Window(MainUI):
         else:
             try:
                 if hasattr(self, "fullsource"):
-                        command = 'idle3' + " " + self.fullsource
+                        command = 'idle3' + (' "%s"' % self.fullsource)
                         subprocess.Popen(command, shell=True) 
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
                             try:
                                 if hasattr(self, "fullsource"):
-                                    command = 'idle' + " " + self.fullsource
+                                    command = 'idle' + (' "%s"' % self.fullsource)
                                     subprocess.Popen(command, shell=True) 
                                     try:
                                         subprocess.check_output()
@@ -504,7 +517,9 @@ class Window(MainUI):
             else: 
                 name = dial.getExistingDirectory(self, "Choose folder")
             fold = os.path.basename(name)
+            folpath = os.getcwd()
             shutil.copytree(name, os.path.join('tmp', fold))
+            folpath = os.path.join(folpath, 'tmp', fold)
         except Exception:
             dial.accept()
             return
@@ -512,7 +527,7 @@ class Window(MainUI):
         a = QListWidgetItem(fold)
         a.setIcon(QIcon(os.path.join('Resources','folder.png')))
         a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight))
-        a.__dict__['folderpath'] = name
+        a.__dict__['folderpath'] = folpath
         self.list.addItem(a)
         
 

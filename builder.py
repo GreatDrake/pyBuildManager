@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from message import Message
 from buildlog import BuildLog
 
@@ -105,7 +106,7 @@ class Builder:
             os.chdir('tmp2')
             shutil.copyfile(setup_file, 'setup.py')
             path = os.getcwd()
-            command = 'python setup.py build'
+            command = str(sys.executable) + ' setup.py build'
         
         except Exception:
             Message.errorMessage(cur_self, ' ', 'Unknown error ocurred.\nYou can try to restart application.', os.path.join(working_dir, 'Resources', 'empt.ico'))

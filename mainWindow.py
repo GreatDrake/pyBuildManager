@@ -38,7 +38,6 @@ class Window(MainUI):
         except Exception:
             shutil.rmtree('tmp', ignore_errors=True)
             os.mkdir('tmp')
-        #os.mkdir(os.path.join("tmp", "includes"))
         
         shutil.rmtree('tmp2', ignore_errors=True)
         
@@ -50,23 +49,19 @@ class Window(MainUI):
         self.resfolder = os.path.join(self.projectdir, "Resources")
 
         #Иконки к возможным расширениям файлов
-        self.extensions = {'.py'  : os.path.join(self.resfolder, 'py.ico'),   '.txt'  : os.path.join(self.resfolder, 'txt.ico'),
-                           '.png' : os.path.join(self.resfolder, 'png.ico'),  '.jpg'  : os.path.join(self.resfolder, 'jpg.ico'),
-                           '.dll' : os.path.join(self.resfolder, 'dll.ico'),  '.html' : os.path.join(self.resfolder, 'web.ico'),
-                           '.htm' : os.path.join(self.resfolder, 'web.ico'),  '.pyc'  : os.path.join(self.resfolder, 'pyc.ico'),
-                           '.rar' : os.path.join(self.resfolder, 'rar.ico'),  '.zip'  : os.path.join(self.resfolder, 'rar.ico'),
-                           '.7z'  : os.path.join(self.resfolder, 'rar.ico'),  '.RAR'  : os.path.join(self.resfolder, 'rar.ico'),
-                           '.ico' : os.path.join(self.resfolder, 'ico.ico'),  '.psd'  : os.path.join(self.resfolder, 'psd.ico'),
-                           '.PSD' : os.path.join(self.resfolder, 'psd.ico'),  '.pyw'  : os.path.join(self.resfolder, 'py.ico'),
-                           '.pdf' : os.path.join(self.resfolder, 'pdf.ico'),  '.exe'  : os.path.join(self.resfolder, 'exe.ico')}
+        self.extensions = {'.py'  : os.path.join(self.resfolder, 'pyt.png' ),  '.txt'  : os.path.join(self.resfolder, 'text.png'),
+                           '.png' : os.path.join(self.resfolder, 'png.png' ),  '.jpg'  : os.path.join(self.resfolder, 'jpg.png' ),
+                           '.dll' : os.path.join(self.resfolder, 'dll.png' ),  '.html' : os.path.join(self.resfolder, 'html.png'),
+                           '.htm' : os.path.join(self.resfolder, 'html.png'),  '.pyc'  : os.path.join(self.resfolder, 'pyt.png' ),
+                           '.rar' : os.path.join(self.resfolder, 'rar.png' ),  '.zip'  : os.path.join(self.resfolder, 'zip.png' ),
+                           '.ico' : os.path.join(self.resfolder, 'ico.ico' ),  '.psd'  : os.path.join(self.resfolder, 'psd.png' ),
+                           '.pyd' : os.path.join(self.resfolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resfolder, 'pyt.png' ),
+                           '.pdf' : os.path.join(self.resfolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resfolder, 'exe.png' ),
+                           '.css' : os.path.join(self.resfolder, 'css.png' ),  '.qss'  : os.path.join(self.resfolder, 'css.png' ),
+                           '.gif' : os.path.join(self.resfolder, 'gif.png' ),  '.js'   : os.path.join(self.resfolder, 'js.png'  )
+                           }
         
         self.source = None #source - файл с исходным кодом 
-        
-        # Удалить файл с настройками если он имеется
-        #try:
-        #    os.remove(os.path.join('data', 'build_settings.pickle'))
-        #except Exception:
-        #    pass
         
         self.initBuilders()
         
@@ -152,7 +147,6 @@ class Window(MainUI):
         helpMenu.addAction(self.aboutAction)
         helpMenu.addAction(self.manualAction)
         
-        
         self.choosebtn.clicked.connect(self.addSourceFile)
         self.choosefoldbtn.clicked.connect(self.addSourceFolder)
         self.buildbtn.clicked.connect(self.build)
@@ -165,7 +159,6 @@ class Window(MainUI):
         pal = self.palette()
         role = self.backgroundRole()
         pal.setColor(role, QColor(252, 252, 252)) #QColor(255, 252, 221)
-        
         
         self.setFixedSize(630 / 1920 * self.screenWidth, 690 / 1080 * self.screenHeight)
         self.setWindowTitle('pyBuildManager') #pyBuilder (old)
@@ -188,6 +181,11 @@ class Window(MainUI):
     #Тот же close event только вызванный через меню программы
     def quitApp(self):
         shutil.rmtree(os.path.join(self.projectdir, 'tmp'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectdir, 'tmp2'), ignore_errors=True)
+        try:
+            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+        except Exception:
+            pass
         qApp.quit()
 
 
@@ -196,10 +194,12 @@ class Window(MainUI):
         dial.setWindowFlags(Qt.Window)
         dial.exec_()
         
+        
     def showSettings(self):
         settings = Settings(self.toolle, self.projectdir)
         settings.setWindowFlags(Qt.Widget)
         settings.exec_()
+        
         
     def showManual(self):
         webbrowser.open('manual.html')
@@ -217,6 +217,7 @@ class Window(MainUI):
         
         menu.exec_(self.list.mapToGlobal(pos))
         
+        
     #Вызов контекстного меню у QListWidget в верхней рамке
     def onTopContext(self, pos):
         item = self.lt.itemAt(pos)
@@ -226,6 +227,7 @@ class Window(MainUI):
             menu.addAction(self.idleAct)
         
             menu.exec_(self.lt.mapToGlobal(pos))
+    
     
     #Открыть файл с исходным кодом в IDLE        
     def openIDLE(self):
@@ -239,7 +241,6 @@ class Window(MainUI):
                 try:
                     if hasattr(self, "fullsource"):
                         command = idle + " " + self.fullsource
-                        command = r'' + command
                         subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
                         try:
                             subprocess.check_output()
@@ -262,9 +263,45 @@ class Window(MainUI):
                 except Exception:
                     pass
             else:
-                Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                try:
+                    if hasattr(self, "fullsource"):
+                        command = 'idle3' + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) 
+                        try:
+                            subprocess.check_output()
+                        except subprocess.CalledProcessError:
+                            try:
+                                if hasattr(self, "fullsource"):
+                                    command = 'idle' + " " + self.fullsource
+                                    subprocess.Popen(command, shell=True) 
+                                    try:
+                                        subprocess.check_output()
+                                    except subprocess.CalledProcessError:
+                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            except Exception:
+                                pass
+                except Exception:
+                    pass
         else:
-            Message.errorMessage(self, "Fail", "Failed to open IDLE")
+            try:
+                if hasattr(self, "fullsource"):
+                        command = 'idle3' + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) 
+                        try:
+                            subprocess.check_output()
+                        except subprocess.CalledProcessError:
+                            try:
+                                if hasattr(self, "fullsource"):
+                                    command = 'idle' + " " + self.fullsource
+                                    subprocess.Popen(command, shell=True) 
+                                    try:
+                                        subprocess.check_output()
+                                    except subprocess.CalledProcessError:
+                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            except Exception:
+                                pass
+            except Exception:
+                pass
                 
                                 
     #Компиляция проекта
@@ -368,11 +405,12 @@ class Window(MainUI):
             return 
 
         #Получение нужной иконки исходя из расширения файла
-        ext = '.' + parts[-1].split('.')[1]
+        ext = '.' + parts[-1].split('.')[-1]
+        ext = ext.lower()
         try:
             iconpath = self.extensions[ext]
         except Exception:
-            iconpath = os.path.join(self.resfolder, 'blank.ico')
+            iconpath = os.path.join(self.resfolder, 'blank.png')
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))
@@ -449,7 +487,7 @@ class Window(MainUI):
             return
         
         a = QListWidgetItem(fold)
-        a.setIcon(QIcon(os.path.join('Resources','folder.ico')))
+        a.setIcon(QIcon(os.path.join('Resources','folder.png')))
         a.setSizeHint(QSize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight))
         self.list.addItem(a)
         

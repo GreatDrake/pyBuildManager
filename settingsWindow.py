@@ -167,9 +167,9 @@ class Settings(QDialog):
         
     #Открыть setup файл в IDLE        
     def openSetupInIDLE(self):
-        fullsource = self.cxbldle.text() #Путь к setup файлу
+        self.fullsource = self.cxbldle.text() #Путь к setup файлу
         
-        if not fullsource or fullsource.isspace():
+        if not self.fullsource or self.fullsource.isspace():
             return
         
         python = os.path.dirname(sys.executable)
@@ -180,14 +180,13 @@ class Settings(QDialog):
                 idle = os.path.join(idle, 'idle.bat')
                 
                 try:
-                    if fullsource:
-                        command = idle + " " + fullsource
-                        command = r'' + command
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\setup.py
+                    if hasattr(self, "fullsource"):
+                        command = idle + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
-                            Message.errorMessage(self, " ", "Failed to open IDLE")
+                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
                 except Exception:
                     pass
                 
@@ -195,20 +194,55 @@ class Settings(QDialog):
                 idle = os.path.join(idle, 'idle.py')
                 
                 try:
-                    if fullsource:
-                        command = idle + " " + fullsource
-                        command = r'' + command
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\setup.py
+                    if hasattr(self, "fullsource"):
+                        command = idle + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\(source).py
                         try:
                             subprocess.check_output()
                         except subprocess.CalledProcessError:
-                            Message.errorMessage(self, " ", "Failed to open IDLE")
+                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
                 except Exception:
                     pass
             else:
-                Message.errorMessage(self, " ", "Failed to open IDLE")
+                try:
+                    if hasattr(self, "fullsource"):
+                        command = 'idle3' + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) 
+                        try:
+                            subprocess.check_output()
+                        except subprocess.CalledProcessError:
+                            try:
+                                if hasattr(self, "fullsource"):
+                                    command = 'idle' + " " + self.fullsource
+                                    subprocess.Popen(command, shell=True) 
+                                    try:
+                                        subprocess.check_output()
+                                    except subprocess.CalledProcessError:
+                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            except Exception:
+                                pass
+                except Exception:
+                    pass
         else:
-            Message.errorMessage(self, " ", "Failed to open IDLE")
+            try:
+                if hasattr(self, "fullsource"):
+                        command = 'idle3' + " " + self.fullsource
+                        subprocess.Popen(command, shell=True) 
+                        try:
+                            subprocess.check_output()
+                        except subprocess.CalledProcessError:
+                            try:
+                                if hasattr(self, "fullsource"):
+                                    command = 'idle' + " " + self.fullsource
+                                    subprocess.Popen(command, shell=True) 
+                                    try:
+                                        subprocess.check_output()
+                                    except subprocess.CalledProcessError:
+                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
+                            except Exception:
+                                pass
+            except Exception:
+                pass
      
      
     #Отобразить уже выбранные настройки если таковые имеются    
@@ -363,13 +397,5 @@ class Settings(QDialog):
                 
         
         
-            
-            
-            
-            
-            
-            
-            
-            
             
             

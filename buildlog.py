@@ -30,7 +30,7 @@ class BuildLog(QMainWindow):
         self.edit = QTextEdit(self)
         self.edit.setReadOnly(True)
         if sys.platform == 'linux':
-            font = QFont("Libaration Serif")
+            font = QFont("Liberation Serif")
         else:
             font = QFont("Calibri")
         font.setPixelSize(20 / 1920 * self.screenWidth)
@@ -117,7 +117,7 @@ class BuildLog(QMainWindow):
         self.box.setText('Building is in progress.\nDo you want to terminate it?\nIt can lead to future errors.')
         self.box.setWindowTitle(' ')
         if sys.platform == 'linux':
-            font = QFont("Libaration Serif")
+            font = QFont("Liberation Serif")
         else:
             font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * self.screenWidth)

@@ -31,7 +31,7 @@ class Settings(QDialog):
         self.screenWidth, self.screenHeight = rec.width(), rec.height()
         
         if sys.platform == 'linux':
-            font = QFont("Libaration Serif")
+            font = QFont("Liberation Serif")
         else:
             font = QFont("Calibri")
         

@@ -18,7 +18,7 @@ class MainUI(QMainWindow):
         top_field_height = 0.037 * self.screenHeight
         
         if sys.platform == 'linux':
-            font = QFont("Libaration Serif")
+            font = QFont("Liberation Serif")
         else:
             font = QFont("Calibri")
         

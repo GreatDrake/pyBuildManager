@@ -1,5 +1,5 @@
 # pyBuildManager
-UI Application written in PyQt for freezing python projects and modules into executables with such python packages as cx_Freeze, PyInstaller and py2exe.
+UI Application written in python and PyQt5 for freezing python projects and modules into executables with such python packages as cx_Freeze, PyInstaller and py2exe.
 
 Application is under development now.
 

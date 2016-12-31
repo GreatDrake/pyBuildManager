@@ -28,7 +28,7 @@ class Window(MainUI):
         self.firstOpen = True
         
         #корректное отображение на линуксе получаемых через QFileDialog путей
-        if sys.platform == 'linux': # -19(-13) linux filepathStrNum
+        if sys.platform == 'linux' or sys.platform == 'darwin': # -19(-13) linux filepathStrNum
             self.filepathStrNum = 13
         else:
             self.filepathStrNum = 0
@@ -259,6 +259,8 @@ class Window(MainUI):
             try:
                 if sys.platform == 'linux':
                     os.system('xdg-open "%s"' % self.foldToOpen)
+                elif sys.platform == 'darwin':
+                    os.system('open "%s"' % self.foldToOpen)
                 elif sys.platform == 'win32':
                     os.startfile(self.foldToOpen)
             except Exception:

@@ -16,7 +16,7 @@ class Settings(QDialog):
         self.firstOpen = True
         
         #корректное отображение на линуксе получаемых через QFileDialog путей
-        if sys.platform == 'linux':
+        if sys.platform == 'linux' or sys.platform == 'darwin':
             self.filepathStrNum = 13
         else:
             self.filepathStrNum = 0
@@ -32,6 +32,8 @@ class Settings(QDialog):
         
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         

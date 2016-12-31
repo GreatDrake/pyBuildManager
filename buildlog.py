@@ -31,6 +31,8 @@ class BuildLog(QMainWindow):
         self.edit.setReadOnly(True)
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         font.setPixelSize(20 / 1920 * self.screenWidth)
@@ -118,6 +120,8 @@ class BuildLog(QMainWindow):
         self.box.setWindowTitle(' ')
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * self.screenWidth)

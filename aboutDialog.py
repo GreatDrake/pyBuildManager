@@ -15,6 +15,8 @@ class About(QDialog):
         
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         

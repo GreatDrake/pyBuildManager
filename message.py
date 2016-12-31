@@ -16,6 +16,8 @@ class Message(QWidget):
         box.setWindowTitle(title)
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)
@@ -43,6 +45,8 @@ class Message(QWidget):
         box.setWindowTitle(title)
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)
@@ -70,6 +74,8 @@ class Message(QWidget):
         box.setWindowTitle(title)
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         font.setPixelSize(23 / 1920 * screenWidth)

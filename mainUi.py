@@ -19,6 +19,8 @@ class MainUI(QMainWindow):
         
         if sys.platform == 'linux':
             font = QFont("Liberation Serif")
+        elif sys.platform == 'darwin':
+            font = QFont("Times")
         else:
             font = QFont("Calibri")
         

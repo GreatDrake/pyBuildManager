@@ -222,7 +222,7 @@ class Window(MainUI):
         
         
     def showManual(self):
-        webbrowser.open('manual.html')
+        webbrowser.open(os.path.join('Manual', 'manual.html'))
         
         
     #Вызов пользователем контекстного меню у QListWidget   

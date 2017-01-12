@@ -1,4 +1,5 @@
 import os
+import os.path
 import shutil
 import sys
 from message import Message

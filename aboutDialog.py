@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QPushButton
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
-import os
+import os.path
 import sys
 
 #Диалоговое окно содержашее основную информацию о приложении

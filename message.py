@@ -1,4 +1,4 @@
-import os
+import os.path
 import sys
 from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton, QApplication
 from PyQt5.QtGui import QIcon, QFont

@@ -1,5 +1,6 @@
 import shutil
 import os
+import os.path
 import sys
 from message import Message
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton

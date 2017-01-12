@@ -1,4 +1,5 @@
 import os
+import os.path
 import shutil
 import pickle
 import webbrowser
@@ -144,6 +145,9 @@ class Window(MainUI):
         self.openAction = QAction("&Open in file manager", self)
         self.openAction.triggered.connect(self.openInExplorer)
         
+        self.openIncludesAction = QAction("&Open folder", self)
+        self.openIncludesAction.triggered.connect(self.openIncludesInExplorer)
+        
         
         menubar = self.menuBar()
         
@@ -238,6 +242,7 @@ class Window(MainUI):
         else: #Пользователь кликнул по пустому пространству QListWidget
             menu.addAction(self.addAct)
             menu.addAction(self.addFold)
+            menu.addAction(self.openIncludesAction)
         
         menu.exec_(self.list.mapToGlobal(pos))
         
@@ -265,6 +270,19 @@ class Window(MainUI):
                     os.startfile(self.foldToOpen)
             except Exception:
                 pass
+            
+            
+    def openIncludesInExplorer(self):
+        folder = os.path.join(self.projectdir, "tmp")
+        try:
+            if sys.platform == 'linux':
+                os.system('xdg-open "%s"' % folder)
+            elif sys.platform == 'darwin':
+                os.system('open "%s"' % folder)
+            elif sys.platform == 'win32':
+                os.startfile(folder)
+        except Exception:
+            pass        
     
     
     #Открыть файл с исходным кодом в IDLE        

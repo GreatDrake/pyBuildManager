@@ -4,6 +4,7 @@ from PyQt5.QtCore import QDir
 from message import Message
 import pickle
 import os
+import os.path
 import sys
 import subprocess
 

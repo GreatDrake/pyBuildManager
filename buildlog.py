@@ -54,12 +54,12 @@ class BuildLog(QMainWindow):
         self.setMenuBar(menubar)
         
         #Создаем новый процесс и в нем компилируем файл
-        self.qProcess = QProcess()
-        self.qProcess.setProcessChannelMode(QProcess.MergedChannels)   
-        self.qProcess.start(command)
-        self.qProcess.waitForStarted()
-        self.qProcess.readyReadStandardOutput.connect(self.readStdOutput) #Сигнал вызывается при получении новых данных в выходной поток
-        self.qProcess.finished.connect(self.onFinished)
+        self.buildProcess = QProcess()
+        self.buildProcess.setProcessChannelMode(QProcess.MergedChannels)   
+        self.buildProcess.start(command)
+        self.buildProcess.waitForStarted()
+        self.buildProcess.readyReadStandardOutput.connect(self.readStdOutput) #Сигнал вызывается при получении новых данных в выходной поток
+        self.buildProcess.finished.connect(self.onFinished)
         
         self.setWindowTitle("Build log")
         self.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'text.png')))
@@ -68,7 +68,7 @@ class BuildLog(QMainWindow):
     
     #Получение данных  
     def readStdOutput(self):
-        self.edit.append((str(self.qProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
+        self.edit.append((str(self.buildProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
     
     #Окончание работы потока
     def onFinished(self):
@@ -140,7 +140,7 @@ class BuildLog(QMainWindow):
         ans = self.box.exec_()
         
         if ans == QMessageBox.Yes:
-            self.qProcess.kill() #Завершаем процесс и производим cleanup действия
+            self.buildProcess.kill() #Завершаем процесс и производим cleanup действия
             os.chdir(self.projdir)
             shutil.rmtree('tmp2', ignore_errors=True)
             shutil.rmtree('tmp2', ignore_errors=True)

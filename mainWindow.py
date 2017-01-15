@@ -34,7 +34,7 @@ class Window(MainUI):
         else:
             self.filepathStrNum = 0
         
-        self.projectdir = os.getcwd()
+        self.projectDir = os.getcwd()
         
         #Создание временной папки с проектом
         try:
@@ -46,24 +46,24 @@ class Window(MainUI):
         shutil.rmtree('tmp2', ignore_errors=True)
         
         try:
-            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+            os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
         except Exception:
             pass
         
-        self.resfolder = os.path.join(self.projectdir, "Resources")
+        self.resFolder = os.path.join(self.projectDir, "Resources")
 
         #Иконки к возможным расширениям файлов
-        self.extensions = {'.py'  : os.path.join(self.resfolder, 'pyt.png' ),  '.txt'  : os.path.join(self.resfolder, 'text.png'),
-                           '.png' : os.path.join(self.resfolder, 'png.png' ),  '.jpg'  : os.path.join(self.resfolder, 'jpg.png' ),
-                           '.dll' : os.path.join(self.resfolder, 'dll.png' ),  '.html' : os.path.join(self.resfolder, 'html.png'),
-                           '.htm' : os.path.join(self.resfolder, 'html.png'),  '.pyc'  : os.path.join(self.resfolder, 'pyt.png' ),
-                           '.rar' : os.path.join(self.resfolder, 'rar.png' ),  '.zip'  : os.path.join(self.resfolder, 'zip.png' ),
-                           '.ico' : os.path.join(self.resfolder, 'ico.png' ),  '.psd'  : os.path.join(self.resfolder, 'psd.png' ),
-                           '.pyd' : os.path.join(self.resfolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resfolder, 'pyt.png' ),
-                           '.pdf' : os.path.join(self.resfolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resfolder, 'exe.png' ),
-                           '.css' : os.path.join(self.resfolder, 'css.png' ),  '.qss'  : os.path.join(self.resfolder, 'css.png' ),
-                           '.gif' : os.path.join(self.resfolder, 'gif.png' ),  '.js'   : os.path.join(self.resfolder, 'js.png'  ),
-                           '.xml' : os.path.join(self.resfolder, 'xml.png')
+        self.extensions = {'.py'  : os.path.join(self.resFolder, 'pyt.png' ),  '.txt'  : os.path.join(self.resFolder, 'text.png'),
+                           '.png' : os.path.join(self.resFolder, 'png.png' ),  '.jpg'  : os.path.join(self.resFolder, 'jpg.png' ),
+                           '.dll' : os.path.join(self.resFolder, 'dll.png' ),  '.html' : os.path.join(self.resFolder, 'html.png'),
+                           '.htm' : os.path.join(self.resFolder, 'html.png'),  '.pyc'  : os.path.join(self.resFolder, 'pyt.png' ),
+                           '.rar' : os.path.join(self.resFolder, 'rar.png' ),  '.zip'  : os.path.join(self.resFolder, 'zip.png' ),
+                           '.ico' : os.path.join(self.resFolder, 'ico.png' ),  '.psd'  : os.path.join(self.resFolder, 'psd.png' ),
+                           '.pyd' : os.path.join(self.resFolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resFolder, 'pyt.png' ),
+                           '.pdf' : os.path.join(self.resFolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resFolder, 'exe.png' ),
+                           '.css' : os.path.join(self.resFolder, 'css.png' ),  '.qss'  : os.path.join(self.resFolder, 'css.png' ),
+                           '.gif' : os.path.join(self.resFolder, 'gif.png' ),  '.js'   : os.path.join(self.resFolder, 'js.png'  ),
+                           '.xml' : os.path.join(self.resFolder, 'xml.png')
                            }
         
         self.source = None #source - файл с исходным кодом 
@@ -122,11 +122,11 @@ class Window(MainUI):
         self.delAct = QAction('&Delete', self)
         self.delAct.triggered.connect(self.delete)
         
-        self.addFold = QAction('Add folder', self)
-        self.addFold.triggered.connect(self.addFolder)
+        self.addFolderAction = QAction('Add folder', self)
+        self.addFolderAction.triggered.connect(self.addFolder)
         
-        self.idleAct = QAction("&Edit with IDLE", self)
-        self.idleAct.triggered.connect(self.openIDLE)
+        self.idleAction = QAction("&Edit with IDLE", self)
+        self.idleAction.triggered.connect(self.openIDLE)
         
         self.exitAction = QAction(QIcon(os.path.join("Resources", "exit.png")), "&Exit", self)
         self.exitAction.triggered.connect(self.quitApp)
@@ -145,9 +145,8 @@ class Window(MainUI):
         self.openAction = QAction("&Open in file manager", self)
         self.openAction.triggered.connect(self.openInExplorer)
         
-        self.openIncludesAction = QAction("&Open folder", self)
+        self.openIncludesAction = QAction("&Open this folder", self)
         self.openIncludesAction.triggered.connect(self.openIncludesInExplorer)
-        
         
         menubar = self.menuBar()
         
@@ -174,17 +173,17 @@ class Window(MainUI):
         
         self.setFixedSize(630 / 1920 * self.screenWidth, 690 / 1080 * self.screenHeight)
         self.setWindowTitle('pyBuildManager') #pyBuilder (old)
-        self.setWindowIcon(QIcon(os.path.join(self.resfolder, 'pyic.ico')))
+        self.setWindowIcon(QIcon(os.path.join(self.resFolder, 'pyic.ico')))
         self.setPalette(pal)
         self.show()
 
         
     def closeEvent(self, event):
         #Перед выходом необходимо удалить временную папку с проектом
-        shutil.rmtree(os.path.join(self.projectdir, 'tmp'), ignore_errors=True)
-        shutil.rmtree(os.path.join(self.projectdir, 'tmp2'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectDir, 'tmp'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectDir, 'tmp2'), ignore_errors=True)
         try:
-            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+            os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
         except Exception:
             pass
         event.accept()
@@ -192,10 +191,10 @@ class Window(MainUI):
         
     #Тот же close event только вызванный через меню программы
     def quitApp(self):
-        shutil.rmtree(os.path.join(self.projectdir, 'tmp'), ignore_errors=True)
-        shutil.rmtree(os.path.join(self.projectdir, 'tmp2'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectDir, 'tmp'), ignore_errors=True)
+        shutil.rmtree(os.path.join(self.projectDir, 'tmp2'), ignore_errors=True)
         try:
-            os.remove(os.path.join(self.projectdir, 'temporaryfilelogtodel.txt'))
+            os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
         except Exception:
             pass
         qApp.quit()
@@ -214,7 +213,7 @@ class Window(MainUI):
         
         
     def showSettings(self):
-        settings = Settings(self.toolle, self.projectdir)
+        settings = Settings(self.toolle, self.projectDir)
         settings.setWindowFlags(Qt.Widget)
         
         x, y = (self.x(), self.y())
@@ -241,7 +240,7 @@ class Window(MainUI):
         
         else: #Пользователь кликнул по пустому пространству QListWidget
             menu.addAction(self.addAct)
-            menu.addAction(self.addFold)
+            menu.addAction(self.addFolderAction)
             menu.addAction(self.openIncludesAction)
         
         menu.exec_(self.list.mapToGlobal(pos))
@@ -253,7 +252,7 @@ class Window(MainUI):
         
         if item:
             menu = QMenu("&Menu", self)
-            menu.addAction(self.idleAct)
+            menu.addAction(self.idleAction)
         
             menu.exec_(self.lt.mapToGlobal(pos))
     
@@ -273,7 +272,7 @@ class Window(MainUI):
             
             
     def openIncludesInExplorer(self):
-        folder = os.path.join(self.projectdir, "tmp")
+        folder = os.path.join(self.projectDir, "tmp")
         try:
             if sys.platform == 'linux':
                 os.system('xdg-open "%s"' % folder)
@@ -386,7 +385,7 @@ class Window(MainUI):
             Message.warningMessage(self, ' ', warning_text)
             return
         
-        src = os.path.join(self.projectdir, 'tmp')
+        src = os.path.join(self.projectDir, 'tmp')
         build_info = None
         btns_to_disable = [self.buildbtn, self.settingsbtn, self.choosebtn, self.choosefoldbtn, 
                            self.addbtn, self.delbtn]
@@ -411,13 +410,13 @@ class Window(MainUI):
         if build_info:
             if build_info[0] == 'PyInstaller':
                 
-                Builder.pyinstaller_build(source_name=self.source, source_folder=src, working_dir=self.projectdir, 
+                Builder.pyinstaller_build(source_name=self.source, source_folder=src, working_dir=self.projectDir, 
                                           project_name=self.le.text(), build_target=self.folder, includes_folder=src, 
                                           build_options=build_info[1], buttons_to_disable=btns_to_disable, cur_self=self)
             
             elif build_info[0] == 'cx_Freeze':
                 
-                Builder.cxfreeze_build(source_name=self.source, source_folder=src, working_dir=self.projectdir, 
+                Builder.cxfreeze_build(source_name=self.source, source_folder=src, working_dir=self.projectDir, 
                                        project_name=self.le.text(), build_target=self.folder, includes_folder=src,
                                        setup_file=build_info[1], buttons_to_disable=btns_to_disable, cur_self=self)
             else:
@@ -466,7 +465,7 @@ class Window(MainUI):
         try:
             iconpath = self.extensions[ext]
         except Exception:
-            iconpath = os.path.join(self.resfolder, 'blank.png')
+            iconpath = os.path.join(self.resFolder, 'blank.png')
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))
@@ -517,7 +516,7 @@ class Window(MainUI):
         try:
             iconpath = self.extensions[ext]
         except Exception:
-            iconpath = os.path.join(self.resfolder, 'blank.ico')
+            iconpath = os.path.join(self.resFolder, 'blank.ico')
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))

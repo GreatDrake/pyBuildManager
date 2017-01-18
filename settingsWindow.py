@@ -304,12 +304,13 @@ class Settings(QDialog):
             except Exception:
                 os.chdir(curdir)
             
-            
             self.le.setText('PyInstaller')
             
             with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
                 info = ['PyInstaller', str(self.instbldle.text())]
                 pickle.dump(info, fl)
+                
+            self.done(0)
                 
         elif str(self.bldbox.currentText()) == 'cx_Freeze':
             path = str(self.cxbldle.text())
@@ -323,9 +324,10 @@ class Settings(QDialog):
                 with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
                     info = ['cx_Freeze', path]
                     pickle.dump(info, fl)
+                self.done(0)
                 
-                
-        self.done(0)
+        else:        
+            self.done(0)
                 
         
         

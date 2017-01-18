@@ -20,7 +20,7 @@ class About(QDialog):
         else:
             font = QFont("Calibri")
         
-        self.lbl = QLabel("pyBuildManager\nbeta 0.75\n\n©Nikita Morozov 2016", self)
+        self.lbl = QLabel("pyBuildManager\nbeta 0.8\n\n©Nikita Morozov 2016", self)
         font.setPixelSize(25 / 1920 * self.screenWidth)
         self.lbl.setFont(font)
         self.lbl.move(10 / 1920 * self.screenWidth, 10 / 1080 * self.screenHeight) 

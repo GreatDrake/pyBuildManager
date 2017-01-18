@@ -13,6 +13,7 @@ from mainUi import MainUI
 from aboutDialog import About
 from settingsWindow import Settings
 from message import Message
+from idleOpener import IdleOpener
 
 
 class Window(MainUI):
@@ -23,7 +24,7 @@ class Window(MainUI):
         MainUI.initUI(self)
         
         #Для открытия папки в файловом менеджере ОС
-        self.foldToOpen = None
+        self.folderToOpen = None
         
         #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
         self.firstOpen = True
@@ -34,7 +35,25 @@ class Window(MainUI):
         else:
             self.filepathStrNum = 0
         
-        self.projectDir = os.getcwd()
+        self.projectDir = os.getcwd() 
+        
+        self.resourceFolder = os.path.join(self.projectDir, "Resources")
+        
+        self.source = None #source - файл с исходным кодом 
+        
+        #Иконки к возможным расширениям файлов
+        self.extensions = {'.py'  : os.path.join(self.resourceFolder, 'pyt.png' ),  '.txt'  : os.path.join(self.resourceFolder, 'text.png'),
+                           '.png' : os.path.join(self.resourceFolder, 'png.png' ),  '.jpg'  : os.path.join(self.resourceFolder, 'jpg.png' ),
+                           '.dll' : os.path.join(self.resourceFolder, 'dll.png' ),  '.html' : os.path.join(self.resourceFolder, 'html.png'),
+                           '.htm' : os.path.join(self.resourceFolder, 'html.png'),  '.pyc'  : os.path.join(self.resourceFolder, 'pyt.png' ),
+                           '.rar' : os.path.join(self.resourceFolder, 'rar.png' ),  '.zip'  : os.path.join(self.resourceFolder, 'zip.png' ),
+                           '.ico' : os.path.join(self.resourceFolder, 'ico.png' ),  '.psd'  : os.path.join(self.resourceFolder, 'psd.png' ),
+                           '.pyd' : os.path.join(self.resourceFolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resourceFolder, 'pyt.png' ),
+                           '.pdf' : os.path.join(self.resourceFolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resourceFolder, 'exe.png' ),
+                           '.css' : os.path.join(self.resourceFolder, 'css.png' ),  '.qss'  : os.path.join(self.resourceFolder, 'css.png' ),
+                           '.gif' : os.path.join(self.resourceFolder, 'gif.png' ),  '.js'   : os.path.join(self.resourceFolder, 'js.png'  ),
+                           '.xml' : os.path.join(self.resourceFolder, 'xml.png')
+                           }
         
         #Создание временной папки с проектом
         try:
@@ -45,28 +64,11 @@ class Window(MainUI):
         
         shutil.rmtree('tmp2', ignore_errors=True)
         
+        #удаление временного файла лог компиляции
         try:
             os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
         except Exception:
             pass
-        
-        self.resFolder = os.path.join(self.projectDir, "Resources")
-
-        #Иконки к возможным расширениям файлов
-        self.extensions = {'.py'  : os.path.join(self.resFolder, 'pyt.png' ),  '.txt'  : os.path.join(self.resFolder, 'text.png'),
-                           '.png' : os.path.join(self.resFolder, 'png.png' ),  '.jpg'  : os.path.join(self.resFolder, 'jpg.png' ),
-                           '.dll' : os.path.join(self.resFolder, 'dll.png' ),  '.html' : os.path.join(self.resFolder, 'html.png'),
-                           '.htm' : os.path.join(self.resFolder, 'html.png'),  '.pyc'  : os.path.join(self.resFolder, 'pyt.png' ),
-                           '.rar' : os.path.join(self.resFolder, 'rar.png' ),  '.zip'  : os.path.join(self.resFolder, 'zip.png' ),
-                           '.ico' : os.path.join(self.resFolder, 'ico.png' ),  '.psd'  : os.path.join(self.resFolder, 'psd.png' ),
-                           '.pyd' : os.path.join(self.resFolder, 'pyt.png' ),  '.pyw'  : os.path.join(self.resFolder, 'pyt.png' ),
-                           '.pdf' : os.path.join(self.resFolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resFolder, 'exe.png' ),
-                           '.css' : os.path.join(self.resFolder, 'css.png' ),  '.qss'  : os.path.join(self.resFolder, 'css.png' ),
-                           '.gif' : os.path.join(self.resFolder, 'gif.png' ),  '.js'   : os.path.join(self.resFolder, 'js.png'  ),
-                           '.xml' : os.path.join(self.resFolder, 'xml.png')
-                           }
-        
-        self.source = None #source - файл с исходным кодом 
         
         self.initBuilders()
         
@@ -126,10 +128,10 @@ class Window(MainUI):
         self.addFolderAction.triggered.connect(self.addFolder)
         
         self.idleAction = QAction("&Edit with IDLE", self)
-        self.idleAction.triggered.connect(self.openIDLE)
+        self.idleAction.triggered.connect(self.openSourceInIDLE)
         
         self.exitAction = QAction(QIcon(os.path.join("Resources", "exit.png")), "&Exit", self)
-        self.exitAction.triggered.connect(self.quitApp)
+        self.exitAction.triggered.connect(self.quitApplication)
         self.exitAction.setShortcut("Ctrl+Q")
         
         self.buildAction = QAction(QIcon(os.path.join("Resources", "build.png")), "&Build", self)
@@ -143,10 +145,10 @@ class Window(MainUI):
         self.manualAction.triggered.connect(self.showManual)
         
         self.openAction = QAction("&Open in file manager", self)
-        self.openAction.triggered.connect(self.openInExplorer)
+        self.openAction.triggered.connect(self.openFolderInExplorer)
         
         self.openIncludesAction = QAction("&Open this folder", self)
-        self.openIncludesAction.triggered.connect(self.openIncludesInExplorer)
+        self.openIncludesAction.triggered.connect(self.openIncludesFolderInExplorer)
         
         menubar = self.menuBar()
         
@@ -172,25 +174,19 @@ class Window(MainUI):
         pal.setColor(role, QColor(252, 252, 252)) #QColor(255, 252, 221)
         
         self.setFixedSize(630 / 1920 * self.screenWidth, 690 / 1080 * self.screenHeight)
-        self.setWindowTitle('pyBuildManager') #pyBuilder (old)
-        self.setWindowIcon(QIcon(os.path.join(self.resFolder, 'pyic.ico')))
+        self.setWindowTitle('pyBuildManager') 
+        self.setWindowIcon(QIcon(os.path.join(self.resourceFolder, 'pyic.ico')))
         self.setPalette(pal)
         self.show()
 
         
     def closeEvent(self, event):
-        #Перед выходом необходимо удалить временную папку с проектом
-        shutil.rmtree(os.path.join(self.projectDir, 'tmp'), ignore_errors=True)
-        shutil.rmtree(os.path.join(self.projectDir, 'tmp2'), ignore_errors=True)
-        try:
-            os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
-        except Exception:
-            pass
+        self.quitApplication()
         event.accept()
 
         
-    #Тот же close event только вызванный через меню программы
-    def quitApp(self):
+    def quitApplication(self):
+        #Перед выходом необходимо удалить временную папку с проектом
         shutil.rmtree(os.path.join(self.projectDir, 'tmp'), ignore_errors=True)
         shutil.rmtree(os.path.join(self.projectDir, 'tmp2'), ignore_errors=True)
         try:
@@ -201,27 +197,24 @@ class Window(MainUI):
 
 
     def showAboutDialog(self):
-        dial = About()
-        dial.setWindowFlags(Qt.Window)
-        
-        x, y = (self.x(), self.y())
-        x += self.width() / 2 - dial.width() / 2
-        y += self.height() / 2 - dial.height() / 2
-        dial.move(x, y)
-        
-        dial.exec_()
+        about = About()
+        about.setWindowFlags(Qt.Window)
+        self.centerDialog(about)
+        about.exec_()
         
         
     def showSettings(self):
         settings = Settings(self.toolle, self.projectDir)
         settings.setWindowFlags(Qt.Widget)
-        
-        x, y = (self.x(), self.y())
-        x += self.width() / 2 - settings.width() / 2
-        y += self.height() / 2 - settings.height() / 2
-        settings.move(x, y)
-        
+        self.centerDialog(settings)
         settings.exec_()
+        
+        
+    def centerDialog(self, dialog):
+        x, y = (self.x(), self.y())
+        x += self.width() / 2 - dialog.width() / 2
+        y += self.height() / 2 - dialog.height() / 2
+        dialog.move(x, y)
         
         
     def showManual(self):
@@ -235,7 +228,7 @@ class Window(MainUI):
         if item: #Пользователь кликнул по элементу
             if hasattr(item, 'folderpath'):
                 menu.addAction(self.openAction)
-                self.foldToOpen = item.folderpath
+                self.folderToOpen = item.folderpath
             menu.addAction(self.delAct)
         
         else: #Пользователь кликнул по пустому пространству QListWidget
@@ -256,23 +249,8 @@ class Window(MainUI):
         
             menu.exec_(self.lt.mapToGlobal(pos))
     
-    
-    #Открыти папки в файловом менеджере os        
-    def openInExplorer(self):
-        if self.foldToOpen:
-            try:
-                if sys.platform == 'linux':
-                    os.system('xdg-open "%s"' % self.foldToOpen)
-                elif sys.platform == 'darwin':
-                    os.system('open "%s"' % self.foldToOpen)
-                elif sys.platform == 'win32':
-                    os.startfile(self.foldToOpen)
-            except Exception:
-                pass
-            
-            
-    def openIncludesInExplorer(self):
-        folder = os.path.join(self.projectDir, "tmp")
+    #Открытиe папки в файловом менеджере os         
+    def explorerOpen(self, folder):
         try:
             if sys.platform == 'linux':
                 os.system('xdg-open "%s"' % folder)
@@ -281,82 +259,23 @@ class Window(MainUI):
             elif sys.platform == 'win32':
                 os.startfile(folder)
         except Exception:
-            pass        
+            pass
+           
+           
+    def openFolderInExplorer(self):
+        if self.folderToOpen:
+            self.explorerOpen(self.folderToOpen)
+            
+            
+    def openIncludesFolderInExplorer(self):
+        folder = os.path.join(self.projectDir, "tmp")
+        self.explorerOpen(folder)     
     
     
     #Открыть файл с исходным кодом в IDLE        
-    def openIDLE(self):
-        python = os.path.dirname(sys.executable)
-        idle = os.path.join(python, "Lib", "idlelib") #Директория с idle
-        
-        if os.path.isdir(idle):
-            if 'idle.bat' in os.listdir(idle):
-                idle = os.path.join(idle, 'idle.bat')
-                
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = idle + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                except Exception:
-                    pass
-                
-            elif 'idle.py' in os.listdir(idle):
-                idle = os.path.join(idle, 'idle.py')
-                
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = idle + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\(source).py
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                except Exception:
-                    pass
-            else:
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = 'idle3' + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) 
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            try:
-                                if hasattr(self, "fullsource"):
-                                    command = 'idle' + (' "%s"' % self.fullsource)
-                                    subprocess.Popen(command, shell=True) 
-                                    try:
-                                        subprocess.check_output()
-                                    except subprocess.CalledProcessError:
-                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                            except Exception:
-                                pass
-                except Exception:
-                    pass
-        else:
-            try:
-                if hasattr(self, "fullsource"):
-                        command = 'idle3' + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) 
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            try:
-                                if hasattr(self, "fullsource"):
-                                    command = 'idle' + (' "%s"' % self.fullsource)
-                                    subprocess.Popen(command, shell=True) 
-                                    try:
-                                        subprocess.check_output()
-                                    except subprocess.CalledProcessError:
-                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                            except Exception:
-                                pass
-            except Exception:
-                pass
+    def openSourceInIDLE(self):
+        if hasattr(self, "fullsource"):
+            IdleOpener.openInIdle(self, self.fullsource)
                 
                                 
     #Компиляция проекта
@@ -423,8 +342,6 @@ class Window(MainUI):
                 pass
         
         
-        
-  
     #Удаление включаемого файла или папки из QListWidget и из папки с проектом   
     def delete(self):
         listitems = self.list.selectedItems()
@@ -465,7 +382,7 @@ class Window(MainUI):
         try:
             iconpath = self.extensions[ext]
         except Exception:
-            iconpath = os.path.join(self.resFolder, 'blank.png')
+            iconpath = os.path.join(self.resourceFolder, 'blank.png')
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))
@@ -516,7 +433,7 @@ class Window(MainUI):
         try:
             iconpath = self.extensions[ext]
         except Exception:
-            iconpath = os.path.join(self.resFolder, 'blank.ico')
+            iconpath = os.path.join(self.resourceFolder, 'blank.ico')
         
         a = QListWidgetItem(parts[-1])
         a.setIcon(QIcon(iconpath))

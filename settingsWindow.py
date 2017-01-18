@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QComboBox, QLineEdit,
 from PyQt5.QtGui import QFont, QIcon, QColor
 from PyQt5.QtCore import QDir
 from message import Message
+from idleOpener import IdleOpener
 import pickle
 import os
 import os.path
 import sys
-import subprocess
 
 #Окно настроек компилятора
 class Settings(QDialog):
@@ -121,7 +121,6 @@ class Settings(QDialog):
         ############################################################################################## 
         
         
-        
         # PyInstaller UI ############################################################################# 
         ############################################################################################## 
         
@@ -141,6 +140,7 @@ class Settings(QDialog):
         
         ############################################################################################## 
         ############################################################################################## 
+        
         
         self.initSettings()
         
@@ -174,81 +174,10 @@ class Settings(QDialog):
     #Открыть setup файл в IDLE        
     def openSetupInIDLE(self):
         self.fullsource = self.cxbldle.text() #Путь к setup файлу
-        
         if not self.fullsource or self.fullsource.isspace():
             return
         
-        python = os.path.dirname(sys.executable)
-        idle = os.path.join(python, "Lib", "idlelib") #Директория с idle
-        
-        if os.path.isdir(idle):
-            if 'idle.bat' in os.listdir(idle):
-                idle = os.path.join(idle, 'idle.bat')
-                
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = idle + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.bat ...\\(source).py
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                except Exception:
-                    pass
-                
-            elif 'idle.py' in os.listdir(idle):
-                idle = os.path.join(idle, 'idle.py')
-                
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = idle + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) # Что-то типа:   ...\\idle.py ...\\(source).py
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                except Exception:
-                    pass
-            else:
-                try:
-                    if hasattr(self, "fullsource"):
-                        command = 'idle3' + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) 
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            try:
-                                if hasattr(self, "fullsource"):
-                                    command = 'idle' + (' "%s"' % self.fullsource)
-                                    subprocess.Popen(command, shell=True) 
-                                    try:
-                                        subprocess.check_output()
-                                    except subprocess.CalledProcessError:
-                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                            except Exception:
-                                pass
-                except Exception:
-                    pass
-        else:
-            try:
-                if hasattr(self, "fullsource"):
-                        command = 'idle3' + (' "%s"' % self.fullsource)
-                        subprocess.Popen(command, shell=True) 
-                        try:
-                            subprocess.check_output()
-                        except subprocess.CalledProcessError:
-                            try:
-                                if hasattr(self, "fullsource"):
-                                    command = 'idle' + (' "%s"' % self.fullsource)
-                                    subprocess.Popen(command, shell=True) 
-                                    try:
-                                        subprocess.check_output()
-                                    except subprocess.CalledProcessError:
-                                        Message.errorMessage(self, "Fail", "Failed to open IDLE")
-                            except Exception:
-                                pass
-            except Exception:
-                pass
+        IdleOpener.openInIdle(self, self.fullsource)
      
      
     #Отобразить уже выбранные настройки если таковые имеются    
@@ -382,8 +311,6 @@ class Settings(QDialog):
                 info = ['PyInstaller', str(self.instbldle.text())]
                 pickle.dump(info, fl)
                 
-            self.done(0)
-                
         elif str(self.bldbox.currentText()) == 'cx_Freeze':
             path = str(self.cxbldle.text())
             
@@ -396,10 +323,9 @@ class Settings(QDialog):
                 with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
                     info = ['cx_Freeze', path]
                     pickle.dump(info, fl)
-                self.done(0)
                 
-        else:
-            self.done(0)
+                
+        self.done(0)
                 
         
         

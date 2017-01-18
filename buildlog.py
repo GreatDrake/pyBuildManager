@@ -25,7 +25,7 @@ class BuildLog(QMainWindow):
         
         self.args = args
         self.callback = callback
-        self.projdir = projdir
+        self.projectDir = projdir
         self.disabled_buttons = disabled_buttons
    
         self.edit = QTextEdit(self)
@@ -41,10 +41,10 @@ class BuildLog(QMainWindow):
         
         self.setCentralWidget(self.edit)
         
-        saveAct = QAction(QIcon(os.path.join(self.projdir, 'Resources', 'save.png')),'Save as', self)
+        saveAct = QAction(QIcon(os.path.join(self.projectDir, 'Resources', 'save.png')),'Save as', self)
         saveAct.triggered.connect(self.saveLog)
         saveAct.setShortcut("Ctrl+S")
-        exitAct = QAction(QIcon(os.path.join(self.projdir, 'Resources', 'exit.png')),'Exit', self)
+        exitAct = QAction(QIcon(os.path.join(self.projectDir, 'Resources', 'exit.png')),'Exit', self)
         exitAct.triggered.connect(self.close)
         exitAct.setShortcut("Ctrl+Q")
         menubar = QMenuBar()
@@ -62,7 +62,7 @@ class BuildLog(QMainWindow):
         self.buildProcess.finished.connect(self.onFinished)
         
         self.setWindowTitle("Build log")
-        self.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'text.png')))
+        self.setWindowIcon(QIcon(os.path.join(self.projectDir, 'Resources', 'text.png')))
         self.resize(1000 * self.screenWidth / 1920, 800 / 1080 * self.screenHeight)
         self.show()
     
@@ -81,12 +81,12 @@ class BuildLog(QMainWindow):
         self.finished = True
         #Передача управления вызвавшей функции
         self.callback(*self.args)
-        Message.infoMessage(self, ' ', 'Finished. You can now check log for errors.', QIcon(os.path.join(self.projdir, 'Resources', 'empt.ico')))
+        Message.infoMessage(self, ' ', 'Finished. You can now check log for errors.', QIcon(os.path.join(self.projectDir, 'Resources', 'empt.ico')))
         
     def saveLog(self):
         if self.finished:
             dial = QFileDialog()
-            dial.setWindowIcon(QIcon(os.path.join(self.projdir, 'Resources', 'save.png'))) #не работает
+            dial.setWindowIcon(QIcon(os.path.join(self.projectDir, 'Resources', 'save.png'))) #не работает
         
             try:
                 if self.firstOpen:
@@ -128,7 +128,7 @@ class BuildLog(QMainWindow):
         font.setPixelSize(23 / 1920 * self.screenWidth)
         self.box.setFont(font)
         self.box.setIcon(QMessageBox.Warning)
-        self.box.setWindowIcon(QIcon(os.path.join(self.projdir, "Resources", "empt.ico")))
+        self.box.setWindowIcon(QIcon(os.path.join(self.projectDir, "Resources", "empt.ico")))
         
         self.box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         
@@ -141,7 +141,7 @@ class BuildLog(QMainWindow):
         
         if ans == QMessageBox.Yes:
             self.buildProcess.kill() #Завершаем процесс и производим cleanup действия
-            os.chdir(self.projdir)
+            os.chdir(self.projectDir)
             shutil.rmtree('tmp2', ignore_errors=True)
             shutil.rmtree('tmp2', ignore_errors=True)
             for button in self.disabled_buttons:

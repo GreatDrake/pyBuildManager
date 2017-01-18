@@ -324,6 +324,7 @@ class Settings(QDialog):
                 with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
                     info = ['cx_Freeze', path]
                     pickle.dump(info, fl)
+                    
                 self.done(0)
                 
         else:        

@@ -24,7 +24,7 @@ class Message(QWidget):
         box.setFont(font)
         box.setIcon(messageType)
         if icon is None:
-            box.setWindowIcon(QIcon(os.path.join("Resources", "empt.ico")))
+            box.setWindowIcon(QIcon(os.path.join(cur_self.projectDir, "Resources", "empt.ico")))
         else:
             box.setWindowIcon(QIcon(icon))
         box.setStandardButtons(QMessageBox.Ok)

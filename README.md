@@ -13,7 +13,7 @@ or
 pip3 install pyqt5
 ```
 <br/>
-It also uses ```cx_Freeze```, ```PyInstaller``` or ```py2exe```**(not supported yet)** to build projects and you must ensure that folders containing scripts from the modules you are working with are added to **PATH** variable. <br/>
+It also uses ```cx_Freeze```, ```PyInstaller``` or ```py2exe```**(not supported yet)** to build projects and you must ensure that folders containing scripts from the packages you are working with are added to **PATH** variable. <br/>
 If you have any problems you should check the documentation of these libraries.
 
 <br/>

@@ -45,10 +45,10 @@ class Builder:
     @staticmethod        
     def _installer_continue(source_name, source_folder, working_dir, project_name, build_target, includes_folder, build_options, buttons_to_disable, cur_self, path):
         try:
-            #Создаем папку с проетом project_name по пути build_target, помещаем в нее include files(из include_folder) 
-            #и скомпилированный проект
-            if not (source_name.split('.')[0] in os.listdir(os.path.join(path, 'dist'))): # Путь к папке со скомпилированным проектом зависит от
-                exe_path = os.path.join(path, 'dist', source_name.split('.')[0] + '.exe') # модификаторов компиляции
+            #Создаем папку с проетом project_name по пути build_target, помещаем в нее include files(из include_folder) и скомпилированный проект 
+            #Путь к папке со скомпилированным проектом зависит от модификаторов компиляции
+            if not (os.path.isdir(os.path.join(os.path.dirname(os.path.join(path, 'dist')), source_name.split('.')[0]))):      
+                exe_path = os.path.join(path, 'dist', source_name.split('.')[0] + ('.exe' if sys.platform == "win32" else '')) 
                 os.chdir(build_target)
                 shutil.copytree(includes_folder, project_name)
                 os.chdir(project_name)
@@ -56,7 +56,7 @@ class Builder:
                     os.remove(source_name) #Если по какой-то причине в папке с готовым проектом находится файл с исходным кодом
                 except Exception:          #то его нужно оттуда удалить
                     pass
-                shutil.copyfile(exe_path, project_name + '.exe')
+                shutil.copy2(exe_path, project_name + ('.exe' if sys.platform == "win32" else ''))
                 os.chdir(working_dir)
                 shutil.rmtree('tmp2', ignore_errors=True) #Перед окончанием работы нужно удалить временную папку
                 for button in buttons_to_disable:

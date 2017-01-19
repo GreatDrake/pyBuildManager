@@ -156,19 +156,24 @@ class Settings(QDialog):
     
     #Создать setup файл    
     def createSetupFile(self):
-        curdir = os.getcwd() #После работы необходимо будет вернуться в директорию, в которой мы находились на моменты вызова метода
+        startDir = os.getcwd() #После работы необходимо будет вернуться в директорию, в которой мы находились на моменты вызова метода
         try:
             os.chdir(os.path.join(self.projectDir, 'tmp'))
-        
+            
+            if "setup.py" in os.listdir(os.getcwd()):
+                os.chdir(startDir)
+                Message.warningMessage(self, " ", "Setup file is already created")
+                return
+            
             with open('setup.py', 'w') as _:
                 pass
         
             self.cxbldle.setText(os.path.join(os.getcwd(), 'setup.py'))
         
             self.openSetupInIDLE()
-            os.chdir(curdir) #Возврат в стартовую директорию
+            os.chdir(startDir) #Возврат в стартовую директорию
         except Exception:
-            os.chdir(curdir)
+            os.chdir(startDir)
         
         
     #Открыть setup файл в IDLE        

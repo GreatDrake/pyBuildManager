@@ -1,10 +1,12 @@
 import sys
 import os.path 
 import subprocess
+import time
 from utilities.message import Message
 
 #Используется для открытия idle на разных системах
 class IdleOpener:
+    sleepTime = 0.15
     
     @staticmethod
     def openInIdle(current_self, fullsource):
@@ -18,8 +20,8 @@ class IdleOpener:
                 try: 
                     command = idle + (' "%s"' % fullsource)
                     result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) # Что-то типа:  ...\\idle.bat ...\\(source).py
-                    _, error = result.communicate()
-                    if error:
+                    time.sleep(IdleOpener.sleepTime) #Ждем sleepTime и проверяем, смог ли запуститься процесс
+                    if result.poll(): #result.poll() - процесс не работает
                         Message.errorMessage(current_self, "Fail", "Failed to open IDLE") 
                 except Exception:
                     pass
@@ -30,8 +32,8 @@ class IdleOpener:
                 try:
                     command = idle + (' "%s"' % fullsource)
                     result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) # Что-то типа:  ...\\idle.py ...\\(source).py
-                    _, error = result.communicate()
-                    if error:
+                    time.sleep(IdleOpener.sleepTime)
+                    if result.poll():
                         Message.errorMessage(current_self, "Fail", "Failed to open IDLE") 
                 except Exception:
                     pass
@@ -39,13 +41,13 @@ class IdleOpener:
                 try:
                     command = 'idle3' + (' "%s"' % fullsource)
                     result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
-                    _, error = result.communicate()
-                    if error:
+                    time.sleep(IdleOpener.sleepTime)
+                    if result.poll():
                         try:
                             command = 'idle' + (' "%s"' % fullsource)
                             result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
-                            _, error = result.communicate()
-                            if error:
+                            time.sleep(IdleOpener.sleepTime)
+                            if result.poll():
                                 Message.errorMessage(current_self, "Fail", "Failed to open IDLE") 
                         except Exception:
                             pass
@@ -55,13 +57,13 @@ class IdleOpener:
             try:
                 command = 'idle3' + (' "%s"' % fullsource)
                 result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
-                _, error = result.communicate()
-                if error:
+                time.sleep(IdleOpener.sleepTime)
+                if result.poll():
                     try:
                         command = 'idle' + (' "%s"' % fullsource)
                         result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
-                        _, error = result.communicate()
-                        if error:
+                        time.sleep(IdleOpener.sleepTime)
+                        if result.poll():
                             Message.errorMessage(current_self, "Fail", "Failed to open IDLE")
                     except Exception:
                         pass

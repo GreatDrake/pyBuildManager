@@ -2,7 +2,7 @@ import shutil
 import os
 import os.path
 import sys
-from message import Message
+from utilities.message import Message
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import QProcess, QDir
@@ -68,7 +68,9 @@ class BuildLog(QMainWindow):
     
     #Получение данных  
     def readStdOutput(self):
-        self.edit.append((str(self.buildProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
+        #self.edit.append((str(self.buildProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
+        #self.edit.append(str(self.buildProcess.readAllStandardOutput()).replace('\r\n', '').replace('\n','').replace('\r', ''))
+        self.edit.append(bytes(self.buildProcess.readAllStandardOutput()).decode('utf-8'))
     
     #Окончание работы потока
     def onFinished(self):

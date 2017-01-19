@@ -2,8 +2,8 @@ import os
 import os.path
 import shutil
 import sys
-from message import Message
-from buildlog import BuildLog
+from utilities.message import Message
+from utilities.buildlog import BuildLog
 
 class Builder:
     

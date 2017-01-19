@@ -8,12 +8,12 @@ import subprocess
 from PyQt5.QtWidgets import QListWidgetItem, QMainWindow, QFileDialog, QAction, QMenu, qApp
 from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtCore import Qt, QSize, QPoint, QDir
-from builder import Builder
+from utilities.builder import Builder
 from mainUi import MainUI
 from aboutDialog import About
 from settingsWindow import Settings
-from message import Message
-from idleOpener import IdleOpener
+from utilities.message import Message
+from utilities.idleOpener import IdleOpener
 
 
 class Window(MainUI):

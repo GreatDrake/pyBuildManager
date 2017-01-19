@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QComboBox, QLineEdit, QPushButton, QFileDialog
 from PyQt5.QtGui import QFont, QIcon, QColor
 from PyQt5.QtCore import QDir
-from message import Message
-from idleOpener import IdleOpener
+from utilities.message import Message
+from utilities.idleOpener import IdleOpener
 import pickle
 import os
 import os.path

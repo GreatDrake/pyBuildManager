@@ -72,13 +72,13 @@ class MainUI(QMainWindow):
         
         self.choosebtn = QPushButton('Choose file', self.topframe)
         self.choosebtn.move(10 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
-        self.choosebtn.resize(0.07 * self.screenWidth, 0.037 * self.screenHeight)
+        self.choosebtn.resize(0.07 * self.screenWidth, 0.036 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.choosebtn.setFont(font)
         
         self.choosefoldbtn = QPushButton('Choose folder', self.topframe)
         self.choosefoldbtn.move(155 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
-        self.choosefoldbtn.resize(0.07 * self.screenWidth, 0.037 * self.screenHeight)
+        self.choosefoldbtn.resize(0.07 * self.screenWidth, 0.036 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.choosefoldbtn.setFont(font)
         
@@ -142,13 +142,13 @@ class MainUI(QMainWindow):
         
         self.addbtn = QPushButton('Add', self.rightframe)
         self.addbtn.move(8 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)
-        self.addbtn.resize(135 / 1920 * self.screenWidth, 46 / 1080 * self.screenHeight)
+        self.addbtn.resize(130 / 1920 * self.screenWidth, 44 / 1080 * self.screenHeight)
         font.setPixelSize(23 / 1920 * self.screenWidth)
         self.addbtn.setFont(font)
         
         self.delbtn = QPushButton('Remove', self.rightframe)
-        self.delbtn.move(225 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)
-        self.delbtn.resize(135  / 1920 * self.screenWidth, 46 / 1080 * self.screenHeight)
+        self.delbtn.move(230 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)
+        self.delbtn.resize(130  / 1920 * self.screenWidth, 44 / 1080 * self.screenHeight)
         font.setPixelSize(23 / 1920 * self.screenWidth)
         self.delbtn.setFont(font)
     

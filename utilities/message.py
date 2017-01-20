@@ -8,7 +8,7 @@ import sys
 class Message(QWidget):
     
     @staticmethod
-    def message(cur_self, title, text, messageType, icon):
+    def message(cur_self, title, text, messageType, iconPath):
         rec = QApplication.desktop()
         rec = rec.screenGeometry()
         screenWidth = rec.width()
@@ -24,10 +24,10 @@ class Message(QWidget):
         font.setPixelSize(23 / 1920 * screenWidth)
         box.setFont(font)
         box.setIcon(messageType)
-        if icon is None:
-            box.setWindowIcon(QIcon(os.path.join(cur_self.projectDir, "Resources", "empt.ico")))
+        if iconPath is None:
+            box.setWindowIcon(QIcon(os.path.join((cur_self.projectDir if hasattr(cur_self, "projectDir") else ""), "Resources", "empt.ico")))
         else:
-            box.setWindowIcon(QIcon(icon))
+            box.setWindowIcon(QIcon(iconPath))
         box.setStandardButtons(QMessageBox.Ok)
         
         button = box.findChild(QPushButton)

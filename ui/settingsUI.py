@@ -21,26 +21,26 @@ class SettingsUI(QDialog):
         
         self.ok = QPushButton('OK', self)
         self.ok.move(295 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
-        self.ok.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
+        self.ok.resize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.ok.setFont(font)
        
         self.cancel = QPushButton('Cancel', self)
         self.cancel.move(20 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
-        self.cancel.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
+        self.cancel.resize(100 / 1920 * self.screenWidth, 33 / 1080 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.cancel.setFont(font)
         
         self.lbl = QLabel("Build tool : ", self)
         font.setPixelSize(28 / 1920 * self.screenWidth)
         self.lbl.setFont(font)
-        self.lbl.move(60 / 1920 * self.screenWidth, 20 / 1080 * self.screenHeight) 
+        self.lbl.move(65 / 1920 * self.screenWidth, 20 / 1080 * self.screenHeight) 
         self.lbl.font().setPixelSize(10)
          
         self.bldbox = QComboBox(self)
         self.bldbox.addItems(builders)
-        self.bldbox.resize(150 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
-        self.bldbox.move(190 / 1920 * self.screenWidth, 23 / 1080 * self.screenHeight)
+        self.bldbox.resize(140 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
+        self.bldbox.move(195 / 1920 * self.screenWidth, 24 / 1080 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.bldbox.setFont(font)
         

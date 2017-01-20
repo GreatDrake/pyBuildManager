@@ -192,7 +192,10 @@ class Window(MainUI):
             os.remove(os.path.join(self.projectDir, 'temporaryfilelogtodel.txt'))
         except Exception:
             pass
-        qApp.quit()
+        if sys.platform == 'win32':
+            qApp.quit() 
+        else:
+            sys.exit()
 
 
     def showAboutDialog(self):

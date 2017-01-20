@@ -1,6 +1,6 @@
 #Запуск приложения
-from mainWindow import Window
 from PyQt5.QtWidgets import QApplication
+from mainWindow import Window
 import sys
 
 app = QApplication(sys.argv)

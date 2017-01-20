@@ -1,9 +1,10 @@
+from utilities.message import Message
+from utilities.buildlog import BuildLog
 import os
 import os.path
 import shutil
 import sys
-from utilities.message import Message
-from utilities.buildlog import BuildLog
+
 
 class Builder:
     

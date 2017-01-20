@@ -1,20 +1,18 @@
-from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QComboBox, QLineEdit, QPushButton, QFileDialog
-from PyQt5.QtGui import QFont, QIcon, QColor
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtCore import QDir
 from utilities.message import Message
 from utilities.idleOpener import IdleOpener
+from ui.settingsUI import SettingsUI
 import pickle
 import os
 import os.path
 import sys
 
 #Окно настроек компилятора
-class Settings(QDialog):
+class Settings(SettingsUI):
     def __init__(self, leToChange, projDir):
         super().__init__()
-        
-        #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
-        self.firstOpen = True
         
         #корректное отображение на линуксе получаемых через QFileDialog путей
         if sys.platform == 'linux' or sys.platform == 'darwin':
@@ -24,123 +22,20 @@ class Settings(QDialog):
         
         # Текстовое поле для отображения настроек в главном окне
         self.le = leToChange
+        #Флаг для открытия QFileDialog в предыдущей директории при повторном использовании
+        self.firstOpen = True
         
         self.projectDir = projDir
         
-        rec = QApplication.desktop()
-        rec = rec.screenGeometry()
-        self.screenWidth, self.screenHeight = rec.width(), rec.height()
-        
-        if sys.platform == 'linux':
-            font = QFont("Liberation Serif")
-        elif sys.platform == 'darwin':
-            font = QFont("Times")
-        else:
-            font = QFont("Calibri")
-        
-        self.ok = QPushButton('OK', self)
-        self.ok.move(295 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
-        self.ok.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.ok.setFont(font)
-        self.ok.clicked.connect(self.okay)
-        
-        self.cancel = QPushButton('Cancel', self)
-        self.cancel.move(20 / 1920 * self.screenWidth, 225 / 1080 * self.screenHeight)
-        self.cancel.resize(100 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.cancel.setFont(font)
-        self.cancel.clicked.connect(self.done)
-        
-        self.lbl = QLabel("Build tool : ", self)
-        font.setPixelSize(28 / 1920 * self.screenWidth)
-        self.lbl.setFont(font)
-        self.lbl.move(60 / 1920 * self.screenWidth, 20 / 1080 * self.screenHeight) 
-        self.lbl.font().setPixelSize(10)
-        
         self.getBuilders()
+        self.initUI(self.builders)
         
-        self.bldbox = QComboBox(self)
-        self.bldbox.addItems(self.builders)
-        self.bldbox.resize(150 / 1920 * self.screenWidth, 34 / 1080 * self.screenHeight)
-        self.bldbox.move(190 / 1920 * self.screenWidth, 23 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.bldbox.setFont(font)
+        self.ok.clicked.connect(self.okay)
+        self.cancel.clicked.connect(self.done)
         self.bldbox.activated[str].connect(self.changeBuilder)
-        
-        
-        # cx_Freeze UI  ##############################################################################   
-        ############################################################################################## 
-          
-        self.lbl2 = QLabel("Setup file : ", self)
-        font.setPixelSize(26 / 1920 * self.screenWidth)
-        self.lbl2.setFont(font)
-        self.lbl2.move(10 / 1920 * self.screenWidth, 96 / 1080 * self.screenHeight) 
-        self.lbl2.hide()
-        
-        self.choosebtn = QPushButton('Choose', self)
-        self.choosebtn.move(317 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
-        self.choosebtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.choosebtn.setFont(font)
         self.choosebtn.clicked.connect(self.chooseSetupFile)
-        self.choosebtn.hide()
-        
-        self.createbtn = QPushButton("Create", self)
-        self.createbtn.move(225 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
-        self.createbtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.createbtn.setFont(font)
         self.createbtn.clicked.connect(self.createSetupFile)
-        self.createbtn.hide()
-        
-        self.editbtn = QPushButton("Edit", self)
-        self.editbtn.move(133 / 1920 * self.screenWidth, 98 / 1080 * self.screenHeight)
-        self.editbtn.resize(86 / 1920 * self.screenWidth, 32 / 1080 * self.screenHeight)
-        font.setPixelSize(22 / 1920 * self.screenWidth)
-        self.editbtn.setFont(font)
         self.editbtn.clicked.connect(self.openSetupInIDLE)
-        self.editbtn.hide()
-        
-        self.cxbldle = QLineEdit(self)
-        self.cxbldle.move(10 / 1920 * self.screenWidth, 145 / 1080 * self.screenHeight)
-        self.cxbldle.resize(395 / 1920 * self.screenWidth, 37 / 1080 * self.screenHeight)
-        font.setPixelSize(23 / 1920 * self.screenWidth)
-        self.cxbldle.setFont(font)
-        self.cxbldle.setReadOnly(True)
-        self.cxbldle.hide()
-        
-        #self.warnlbl = QLabel("                                                                         ", self) #"Setup file must be .py"
-        #self.warnlbl.adjustSize()
-        #self.warnlbl.setStyleSheet("QLabel { color : red; }")
-        #self.warnlbl.setFont(QFont("Calibri", 14))
-        #self.warnlbl.move(10 / 1920 * self.screenWidth, 185 / 1080 * self.screenHeight)
-        #self.warnlbl.hide()
-        
-        ############################################################################################## 
-        ############################################################################################## 
-        
-        
-        # PyInstaller UI ############################################################################# 
-        ############################################################################################## 
-        
-        self.lbl3 = QLabel("Build options : ", self)
-        font.setPixelSize(26 / 1920 * self.screenWidth)
-        self.lbl3.setFont(font)
-        self.lbl3.move(10 / 1920 * self.screenWidth, 95 / 1080 * self.screenHeight) 
-        self.lbl3.hide()
-        
-        self.instbldle = QLineEdit(self)
-        self.instbldle.move(10 / 1920 * self.screenWidth, 145 / 1080 * self.screenHeight)
-        self.instbldle.resize(395 / 1920 * self.screenWidth, 37 / 1080 * self.screenHeight)
-        font.setPixelSize(23 / 1920 * self.screenWidth)
-        self.instbldle.setFont(font)
-        self.instbldle.hide()
-        self.instbldle.setPlaceholderText('For example: --noconsole, or leave empty')
-        
-        ############################################################################################## 
-        ############################################################################################## 
-        
         
         self.initSettings()
         
@@ -237,30 +132,6 @@ class Settings(QDialog):
             self.showFreezeUI()
         elif s == 'PyInstaller':
             self.showInstallerUI()
-      
-    #Отобразить интерфейс для PyInstaller  
-    def showInstallerUI(self):
-        self.lbl3.show()
-        self.instbldle.show()
-        
-        self.lbl2.hide()
-        self.choosebtn.hide()
-        self.createbtn.hide()
-        self.editbtn.hide()
-        self.cxbldle.hide()
-        #self.warnlbl.hide()
-    
-    #Отобразить интерфейс для cx_Freeze
-    def showFreezeUI(self):
-        self.lbl3.hide()
-        self.instbldle.hide()
-        
-        self.lbl2.show()
-        self.choosebtn.show()
-        self.createbtn.show()
-        self.editbtn.show()
-        self.cxbldle.show()
-        #self.warnlbl.show()
         
     
     #Выбор setup файла для cx_Freeze 
@@ -282,12 +153,8 @@ class Settings(QDialog):
         
         if file:
             if os.path.basename(file).split('.')[1] != 'py':
-                #self.warnlbl.setText("Setup file must be .py")
-                #self.warnlbl.adjustSize()
                 Message.warningMessage(self, ' ', 'Setup file must be .py')
             else:
-                #self.warnlbl.setText("                                                                                                 ")
-                #self.warnlbl.adjustSize()
                 self.cxbldle.setText(file)
         
         
@@ -321,8 +188,6 @@ class Settings(QDialog):
             path = str(self.cxbldle.text())
             
             if not path or path.isspace():
-                #self.warnlbl.setText('You have to specify setup file')
-                #self.warnlbl.adjustSize()
                 Message.warningMessage(self, ' ', 'You have to specify setup file')
             else:
                 self.le.setText('cx_Freeze')

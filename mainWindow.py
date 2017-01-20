@@ -1,25 +1,24 @@
+from PyQt5.QtWidgets import QListWidgetItem, QFileDialog, QAction, QMenu, qApp
+from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtCore import Qt, QSize, QPoint, QDir
+from utilities.builder import Builder
+from utilities.message import Message
+from utilities.idleOpener import IdleOpener
+from ui.mainUI import MainUI
+from aboutDialog import About
+from settingsWindow import Settings
 import os
 import os.path
 import shutil
 import pickle
 import webbrowser
 import sys
-import subprocess
-from PyQt5.QtWidgets import QListWidgetItem, QMainWindow, QFileDialog, QAction, QMenu, qApp
-from PyQt5.QtGui import QIcon, QColor
-from PyQt5.QtCore import Qt, QSize, QPoint, QDir
-from utilities.builder import Builder
-from mainUi import MainUI
-from aboutDialog import About
-from settingsWindow import Settings
-from utilities.message import Message
-from utilities.idleOpener import IdleOpener
 
 
 class Window(MainUI):
     def __init__(self):
         #Вызываем метод __init__ базового класса QMainWindow
-        QMainWindow.__init__(self)
+        super().__init__()
         #Инициализируем весь интерфейс из класса MainUI
         MainUI.initUI(self)
         

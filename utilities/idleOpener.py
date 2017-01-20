@@ -1,8 +1,9 @@
+from utilities.message import Message
 import sys
 import os.path 
 import subprocess
 import time
-from utilities.message import Message
+
 
 #Используется для открытия idle на разных системах
 class IdleOpener:

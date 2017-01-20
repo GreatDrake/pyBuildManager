@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import (QPushButton, QListWidget, QLineEdit, QFrame, QLabel, QMainWindow, QApplication, QAbstractItemView)
+from PyQt5.QtWidgets import QPushButton, QListWidget, QLineEdit, QFrame, QLabel, QMainWindow, QApplication, QAbstractItemView
 from PyQt5.QtGui import QFont, QColor, QPalette
 from PyQt5.QtCore import Qt, QSize
 import sys
@@ -6,8 +6,7 @@ import sys
 #В этом классе описывается основной графический интерфейс пользователя
 class MainUI(QMainWindow):
     def __init__(self):
-        super().__init()
-
+        super().__init__()
 
     def initUI(self):
         rec = QApplication.desktop()

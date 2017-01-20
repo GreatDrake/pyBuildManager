@@ -1,11 +1,12 @@
+from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton
+from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import QProcess, QDir
+from utilities.message import Message
 import shutil
 import os
 import os.path
 import sys
-from utilities.message import Message
-from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenuBar, QFileDialog, QAction, QApplication, QMessageBox, QPushButton
-from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtCore import QProcess, QDir
+
 
 class BuildLog(QMainWindow):
     def __init__(self, command, callback, projdir, disabled_buttons, args):    

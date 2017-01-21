@@ -102,16 +102,16 @@ class Window(MainUI):
         else:
             del py2exe
             
-        with open(os.path.join('data', 'builders.pickle'), 'wb') as fl: # В builders.pickle находятся названия доступных инструментов компиляции
+        with open(os.path.join('data', 'builders.pkl'), 'wb') as fl: # В builders.pickle находятся названия доступных инструментов компиляции
             pickle.dump(self.builders, fl)
             
             
         if self.builders:
-            with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl: # В build_settings.pickle находится информация вида
+            with open(os.path.join('data', 'build_settings.pkl'), 'wb') as fl: # В build_settings.pickle находится информация вида
                 pickle.dump([self.builders[0], ''], fl)                           # [(Название инструмента), (дополнительная информация)]    
         else:                                                                     # доп. информация - модификаторы компиляции или путь к setup файлу или
             try:
-                os.remove(os.path.join('data', 'build_settings.pickle'))
+                os.remove(os.path.join('data', 'build_settings.pkl'))
             except Exception:
                 pass
             
@@ -312,7 +312,7 @@ class Window(MainUI):
                            self.addbtn, self.delbtn]
             
         try:
-            f = open(os.path.join('data', 'build_settings.pickle'), 'rb')
+            f = open(os.path.join('data', 'build_settings.pkl'), 'rb')
             build_info = pickle.load(f)
             f.close()
         except Exception:

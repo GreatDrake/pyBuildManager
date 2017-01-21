@@ -85,7 +85,7 @@ class Settings(SettingsUI):
         settings = None
         
         try:
-            f = open(os.path.join('data', 'build_settings.pickle'), 'rb')
+            f = open(os.path.join('data', 'build_settings.pkl'), 'rb')
             settings = pickle.load(f)
             f.close()
         except Exception:
@@ -113,7 +113,7 @@ class Settings(SettingsUI):
     
     #Получение доступных инструментов компиляции    
     def getBuilders(self):
-        with open(os.path.join('data', 'builders.pickle'), 'rb') as f:
+        with open(os.path.join('data', 'builders.pkl'), 'rb') as f:
             self.builders = pickle.load(f)
             
         if 'PyInstaller' in self.builders:
@@ -178,7 +178,7 @@ class Settings(SettingsUI):
             
             self.le.setText('PyInstaller')
             
-            with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
+            with open(os.path.join('data', 'build_settings.pkl'), 'wb') as fl:
                 info = ['PyInstaller', str(self.instbldle.text())]
                 pickle.dump(info, fl)
                 
@@ -191,7 +191,7 @@ class Settings(SettingsUI):
                 Message.warningMessage(self, ' ', 'You have to specify setup file')
             else:
                 self.le.setText('cx_Freeze')
-                with open(os.path.join('data', 'build_settings.pickle'), 'wb') as fl:
+                with open(os.path.join('data', 'build_settings.pkl'), 'wb') as fl:
                     info = ['cx_Freeze', path]
                     pickle.dump(info, fl)
                     

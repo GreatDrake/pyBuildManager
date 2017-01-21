@@ -56,11 +56,13 @@ class BuildLog(QMainWindow):
         
         #Создаем новый процесс и в нем компилируем файл
         self.buildProcess = QProcess()
-        self.buildProcess.setProcessChannelMode(QProcess.MergedChannels)   
+        self.buildProcess.setProcessChannelMode(QProcess.MergedChannels) 
+        self.buildProcess.readyReadStandardOutput.connect(self.readStdOutput) #Сигнал вызывается при получении новых данных в выходной поток
+        self.buildProcess.readyReadStandardError.connect(self.readStdError)  #Сигнал вызывается при получении новых данных в поток ошибок
+        self.buildProcess.finished.connect(self.onFinished)
         self.buildProcess.start(command)
         self.buildProcess.waitForStarted()
-        self.buildProcess.readyReadStandardOutput.connect(self.readStdOutput) #Сигнал вызывается при получении новых данных в выходной поток
-        self.buildProcess.finished.connect(self.onFinished)
+        
         
         self.setWindowTitle("Build log")
         self.setWindowIcon(QIcon(os.path.join(self.projectDir, 'Resources', 'text.png')))
@@ -69,9 +71,17 @@ class BuildLog(QMainWindow):
     
     #Получение данных  
     def readStdOutput(self):
-        #self.edit.append((str(self.buildProcess.readAllStandardOutput())[2:-5]).replace('\r\n', ''))
-        #self.edit.append(str(self.buildProcess.readAllStandardOutput()).replace('\r\n', '').replace('\n','').replace('\r', ''))
-        self.edit.append(bytes(self.buildProcess.readAllStandardOutput()).decode('utf-8'))
+        try:
+            self.edit.append(bytes(self.buildProcess.readAllStandardOutput()).decode('utf-8'))
+        except Exception:
+            Message.errorMessage(self, ' ', 'Unknown error ocurred.\nYou can try to restart application.')
+    
+    #Получение данных об ошибке   
+    def readStdError(self):
+        try:
+            self.edit.append(bytes(self.buildProcess.readAllStandardError()).decode('utf-8'))
+        except Exception:
+            Message.errorMessage(self, ' ', 'Unknown error ocurred.\nYou can try to restart application.')
     
     #Окончание работы потока
     def onFinished(self):

@@ -81,6 +81,7 @@ class MainUI(QMainWindow):
         self.choosefoldbtn.resize(0.07 * self.screenWidth, 0.036 * self.screenHeight)
         font.setPixelSize(22 / 1920 * self.screenWidth)
         self.choosefoldbtn.setFont(font)
+        self.choosefoldbtn.setToolTip("Where folder with compiled project will be placed")
         
         #self.warnlbl = QLabel('                                                                    ', self.topframe)
         #self.warnlbl.setFont(QFont('Calibri', 14))
@@ -134,11 +135,13 @@ class MainUI(QMainWindow):
         self.list.setSelectionMode(QAbstractItemView.SingleSelection)
         #self.list.setDragDropMode(QAbstractItemView.NoDragDrop)
         self.list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.list.setToolTip("Add resources and your modules/packages that program uses here")
         
         self.lbl4 = QLabel('Include files : ', self.rightframe)
         self.lbl4.move(10 / 1920 * self.screenWidth, 5 / 1080 * self.screenHeight)
         font.setPixelSize(26 / 1920 * self.screenWidth)
         self.lbl4.setFont(font)
+        #self.lbl4.setToolTip("Add resources and YOUR modules/packages that program uses here")
         
         self.addbtn = QPushButton('Add', self.rightframe)
         self.addbtn.move(8 / 1920 * self.screenWidth, 315 / 1080 * self.screenHeight)

@@ -48,7 +48,7 @@ class Builder:
         try:
             #Создаем папку с проетом project_name по пути build_target, помещаем в нее include files(из include_folder) и скомпилированный проект 
             #Путь к папке со скомпилированным проектом зависит от модификаторов компиляции
-            if not (os.path.isdir(os.path.join(os.path.dirname(os.path.join(path, 'dist')), source_name.split('.')[0]))):      
+            if not (os.path.isdir(os.path.join(os.path.join(path, 'dist'), source_name.split('.')[0]))):      
                 exe_path = os.path.join(path, 'dist', source_name.split('.')[0] + ('.exe' if sys.platform == "win32" else '')) 
                 os.chdir(build_target)
                 shutil.copytree(includes_folder, project_name)

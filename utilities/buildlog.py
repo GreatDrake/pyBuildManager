@@ -51,6 +51,7 @@ class BuildLog(QMainWindow):
         menubar = QMenuBar()
         fileMenu = menubar.addMenu("File")
         fileMenu.addAction(saveAct)
+        fileMenu.addSeparator()
         fileMenu.addAction(exitAct)
         self.setMenuBar(menubar)
         

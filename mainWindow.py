@@ -153,10 +153,12 @@ class Window(MainUI):
         
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(self.buildAction)
+        fileMenu.addSeparator()
         fileMenu.addAction(self.exitAction)
         
         helpMenu = menubar.addMenu("&Help")
         helpMenu.addAction(self.aboutAction)
+        helpMenu.addSeparator()
         helpMenu.addAction(self.manualAction)
         
         self.choosebtn.clicked.connect(self.addSourceFile)
@@ -230,12 +232,14 @@ class Window(MainUI):
         if item: #Пользователь кликнул по элементу
             if hasattr(item, 'folderpath'):
                 menu.addAction(self.openAction)
+                menu.addSeparator()
                 self.folderToOpen = item.folderpath
             menu.addAction(self.delAct)
         
         else: #Пользователь кликнул по пустому пространству QListWidget
             menu.addAction(self.addAct)
             menu.addAction(self.addFolderAction)
+            menu.addSeparator()
             menu.addAction(self.openIncludesAction)
         
         menu.exec_(self.list.mapToGlobal(pos))

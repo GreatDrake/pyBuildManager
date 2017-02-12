@@ -51,7 +51,7 @@ class Window(MainUI):
                            '.pdf' : os.path.join(self.resourceFolder, 'pdf.png' ),  '.exe'  : os.path.join(self.resourceFolder, 'exe.png' ),
                            '.css' : os.path.join(self.resourceFolder, 'css.png' ),  '.qss'  : os.path.join(self.resourceFolder, 'css.png' ),
                            '.gif' : os.path.join(self.resourceFolder, 'gif.png' ),  '.js'   : os.path.join(self.resourceFolder, 'js.png'  ),
-                           '.xml' : os.path.join(self.resourceFolder, 'xml.png')
+                           '.xml' : os.path.join(self.resourceFolder, 'xml.png'),   '.7z'   : os.path.join(self.resourceFolder, 'rar.png' )
                            }
         
         #Создание временной папки с проектом

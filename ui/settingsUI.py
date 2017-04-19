@@ -119,6 +119,9 @@ class SettingsUI(QDialog):
         self.editbtn.hide()
         self.cxbldle.hide()
         
+        self.ok.show()
+        self.cancel.show()
+        
     
     #Отобразить интерфейс для cx_Freeze
     def showFreezeUI(self):
@@ -130,6 +133,23 @@ class SettingsUI(QDialog):
         self.createbtn.show()
         self.editbtn.show()
         self.cxbldle.show()
+        
+        self.ok.show()
+        self.cancel.show()
+     
+    #Отобразить интерфейс для py2exe 
+    def showPy2ExeUi(self):
+        self.lbl2.hide()
+        self.choosebtn.hide()
+        self.createbtn.hide()
+        self.editbtn.hide()
+        self.cxbldle.hide()
+        
+        self.lbl3.hide()
+        self.instbldle.hide()
+        
+        self.ok.hide()
+        self.cancel.hide()
        
         
         

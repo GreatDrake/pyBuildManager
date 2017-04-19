@@ -132,6 +132,8 @@ class Settings(SettingsUI):
             self.showFreezeUI()
         elif s == 'PyInstaller':
             self.showInstallerUI()
+        else:
+            self.showPy2ExeUi()
         
     
     #Выбор setup файла для cx_Freeze 

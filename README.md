@@ -16,6 +16,11 @@ pip3 install pyqt5
 
 
 Application also uses ```cx_Freeze```, ```PyInstaller``` or ```py2exe```(not supported yet) to build projects and you need those of them installed which you want to use. <br/>
+```
+pip3 install pyinstaller
+pip3 install cx_Freeze
+pip3 install py2exe
+```
 **Important:** you must ensure that folders containing scripts from the packages you are working with are added to **PATH** environment variable. <br/>
 If you have any problems you should check the documentation of these libraries.
 
